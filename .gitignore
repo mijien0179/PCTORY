@@ -1,0 +1,9 @@
+﻿**/bin/
+**/obj/
+**/debug/
+**/release/
+**/.vs/
+
+*.exe
+*.cache
+*.suo
