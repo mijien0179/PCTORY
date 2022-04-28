@@ -12,6 +12,7 @@ namespace pctory
         public enum EventCode : uint
         {
             EVENT_SYSTEM_FOREGROUND = 0x0003,
+            EVENT_OBJECT_NAMECHANGE = 0x800C
         }
         
         /// <summary>

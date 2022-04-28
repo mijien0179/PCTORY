@@ -24,13 +24,17 @@ namespace pctory
         InnerDataFlags containData;
         DateTime startTime;
         DateTime endTime;
-        string title;
+        List<(DateTime, string)> windowText;
 
         public PCB(DateTime _startTime, DateTime _endTime, string _title)
         {
             StartTime = _startTime;
             EndTime = _endTime;
-            title = _title;
+            windowText = new List<(DateTime, string)>();
+            if (_title != null)
+            {
+                windowText.Add((_startTime, _title));
+            }
         }
         
         public PCB(DateTime _startTime) : this(_startTime, DateTime.MinValue, null)
@@ -63,13 +67,19 @@ namespace pctory
                 else containData &= ~InnerDataFlags.WINDOW_BACKGROUND;
             }
         }
-        public string WindowTitle
+        public (DateTime, string) GetWindowTitle(int i = -1)
         {
-            get { return title; }
-            set { title = value;
-                if (title != null) containData |= InnerDataFlags.WINDOW_TITLE;
-                else containData &= ~InnerDataFlags.WINDOW_TITLE;
-            }
+            if (i < 0) return windowText.Last();
+            if (i < windowText.Count()) return windowText[i];
+            else return (DateTime.MinValue, null);
+        }
+        public void SaveWindowText(DateTime time, string text)
+        {
+            windowText.Add((time, text));
+        }
+        public void SaveWindowText((DateTime, string) data)
+        {
+            windowText.Add(data);
         }
     }
 
@@ -122,10 +132,21 @@ namespace pctory
 
             if (containTitle)
             {
-                d.WindowTitle = proc.MainWindowTitle;
+                d.SaveWindowText(d.StartTime, proc.MainWindowTitle);
             }
 
             Add(proc.MainModule.FileName, d);
+        }
+
+        public void SaveWindowText(Process proc, IntPtr hWnd)
+        {
+            if(last_key == null)
+            {
+                Add(proc, true);
+                return;
+            }
+
+            list[proc.MainModule.FileName].Last().SaveWindowText((DateTime.Now, proc.MainWindowTitle));
         }
 
         /// <summary>
@@ -161,11 +182,7 @@ namespace pctory
 
     internal class Tracer
     {
-        private uint? hHookCode;
         ProcessInfoList procInfoList;
-
-        private wa.WinEventProc handler; //GC에 의한 이동 방지
-
         public ProcessInfoList ProcInfoList
         {
             get { return procInfoList; }
@@ -173,50 +190,118 @@ namespace pctory
 
         }
 
-        public Tracer()
+        private bool pWindowTextTracking;
+        public bool WindowTextTracking
         {
-            hHookCode = null;
+            get { return pWindowTextTracking; }
+            set { pWindowTextTracking = value; }
+        }
+
+        #region GC에 의한 삭제 방지
+
+        private wa.WinEventProc hEventForeground; // detect change foreground
+        private uint? hForegroundHookCode;
+
+        private wa.WinEventProc hEventWindowText; // detect change window text
+        private uint? hWindowTextHookCode;
+
+        #endregion
+
+        private IntPtr hWnd;
+
+
+        public Tracer(bool windowTextTracking)
+        {
+            hForegroundHookCode = null;
+            hWindowTextHookCode = null;
+
+            WindowTextTracking = windowTextTracking;
+
             procInfoList = new ProcessInfoList();
         }
+
+        public Tracer() : this(false) {}
+
         ~Tracer()
         {
             StopTrace();
         }
         /// <summary>
-        /// 후킹 바인딩 코드
+        /// foreground 후킹 바인딩 코드
         /// </summary>
+        static int count = 0;
         private void GetForeGroundWindow(IntPtr hWinEventHook, int iEvent, IntPtr hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime)
         {
+            this.hWnd = hWnd;
             uint windowHandle;
+            count++;
+            Trace.WriteLine($"{count}윈도우 변경됨");
 
             wa.GetWindowThreadProcessId(hWnd, out windowHandle);
             if (windowHandle == 0) return;
+            Process proc = Process.GetProcessById((int)windowHandle);
+            ProcInfoList.Add(proc, WindowTextTracking);
 
-            ProcInfoList.Add(Process.GetProcessById((int)windowHandle), true);
+
+            if (WindowTextTracking) // Text 후킹 코드 체크
+            {
+                hEventWindowText = GetForegroundText;
+                if (hWindowTextHookCode != null && hWindowTextHookCode != 0)
+                {
+                    wa.UnhookWinEvent(hWindowTextHookCode ?? 0);
+                }
+
+                hWindowTextHookCode = ah.SetHook(wa.EventCode.EVENT_OBJECT_NAMECHANGE, hEventWindowText, proc.Id);
+
+                if (hWindowTextHookCode == 0) Trace.WriteLine("Tracer Text 후킹 코드 변경");
+                else Trace.WriteLine("Tracer 후킹 코드 바인딩 성공");
+            }
+
 
         }
-        
+
+        private void GetForegroundText(IntPtr hWinEventHook, int iEvent, IntPtr hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime)
+        {
+            if (hWnd != this.hWnd) return;
+
+            uint windowHandle;
+            wa.GetWindowThreadProcessId(hWnd, out windowHandle);
+            if (windowHandle == 0) return;
+            ProcInfoList.SaveWindowText(Process.GetProcessById((int)windowHandle), hWnd);
+        }
+
         public Tracer RunTrace()
         {
-            handler = GetForeGroundWindow;
-            if (hHookCode != null && hHookCode != 0) return this;
+            hEventForeground = GetForeGroundWindow;
+            if (hForegroundHookCode != null && hForegroundHookCode != 0) return this;
 
-            hHookCode = ah.SetHook(wa.EventCode.EVENT_SYSTEM_FOREGROUND, handler);
+            hForegroundHookCode = ah.SetHook(wa.EventCode.EVENT_SYSTEM_FOREGROUND, hEventForeground);
 
-            if(hHookCode == 0) Trace.Write("Tracer 후킹 코드 바인딩 실패");
-            else Trace.Write("Tracer 후킹 코드 바인딩 성공");
+            if(hForegroundHookCode == 0) Trace.WriteLine("Tracer 후킹 코드 바인딩 실패");
+            else Trace.WriteLine("Tracer 후킹 코드 바인딩 성공");
+
             return this;
         }
         public Tracer StopTrace()
         {
-            if (hHookCode != null && hHookCode != 0)
+            if (hForegroundHookCode != null && hForegroundHookCode != 0)
             {
-                if (ah.EndHook(hHookCode ?? 0)) Trace.WriteLine("후킹 코드 바인딩 해제 성공");
+                if (ah.EndHook(hForegroundHookCode ?? 0)) Trace.WriteLine("후킹 코드 바인딩 해제 성공");
                 else Trace.WriteLine("후킹 코드 바인딩 해제 실패");
             }
-            handler = null;
+
+            if (hForegroundHookCode != null && hForegroundHookCode != 0)
+            {
+                if (ah.EndHook(hWindowTextHookCode ?? 0)) Trace.WriteLine("Text 후킹 코드 바인딩 성공");
+                else Trace.WriteLine("후킹 코드 바인딩 해제 실패");
+            }
+
+            hEventForeground = null;
+            hEventWindowText = null;
             return this;
         }
+
+        
 
 
     }
