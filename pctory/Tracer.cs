@@ -207,7 +207,7 @@ namespace pctory
 
         #endregion
 
-        private IntPtr hWnd;
+        private IntPtr foreground_hWnd;
 
 
         public Tracer(bool windowTextTracking)
@@ -232,7 +232,7 @@ namespace pctory
         static int count = 0;
         private void GetForeGroundWindow(IntPtr hWinEventHook, int iEvent, IntPtr hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime)
         {
-            this.hWnd = hWnd;
+            this.foreground_hWnd = hWnd;
             uint windowHandle;
             count++;
             Trace.WriteLine($"{count}윈도우 변경됨");
@@ -262,7 +262,7 @@ namespace pctory
 
         private void GetForegroundText(IntPtr hWinEventHook, int iEvent, IntPtr hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime)
         {
-            if (hWnd != this.hWnd) return;
+            if (hWnd != this.foreground_hWnd) return;
 
             uint windowHandle;
             wa.GetWindowThreadProcessId(hWnd, out windowHandle);

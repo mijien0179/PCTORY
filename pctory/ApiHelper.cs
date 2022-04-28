@@ -16,11 +16,11 @@ namespace pctory
 {
     internal static class ApiHelper
     {
-        
-        public static uint SetHook(wae EventCode, wa.WinEventProc WndProc)
+         
+        public static uint SetHook(wae EventCode, wa.WinEventProc WndProc, int procId = 0)
         {
             return wa.SetWinEventHook(EventCode, EventCode,
-                IntPtr.Zero, WndProc, 0, 0,
+                IntPtr.Zero, WndProc, procId, 0,
                 wa.SetWinEventHookFlags.WINEVENT_OUTOFCONTEXT | wa.SetWinEventHookFlags.WINEVENT_SKIPOWNPROCESS);
         }
 
