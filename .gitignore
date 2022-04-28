@@ -2,7 +2,7 @@
 **/obj/
 **/debug/
 **/release/
-**/.vs/
+**/.vs/**
 
 *.exe
 *.cache
