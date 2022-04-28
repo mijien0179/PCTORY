@@ -9,7 +9,7 @@ namespace pctory
 {
     internal class WinApi
     {
-        public enum EVENT_CODE : uint
+        public enum EventCode : uint
         {
             EVENT_SYSTEM_FOREGROUND = 0x0003,
         }
@@ -65,7 +65,7 @@ namespace pctory
         /// <param name="dwflags"><c>SetWinEventHookFlags</c> 플래그</param>
         /// <returns>성공시 이벤트 hook ID값. 실패시 0</returns>
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern uint SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventProc lpfnWinEventProc, int idProcess, int idThread, SetWinEventHookFlags dwflags);
+        public static extern uint SetWinEventHook(WinApi.EventCode eventMin, WinApi.EventCode eventMax, IntPtr hmodWinEventProc, WinEventProc lpfnWinEventProc, int idProcess, int idThread, SetWinEventHookFlags dwflags);
 
         public enum SetWinEventHookFlags
         {
