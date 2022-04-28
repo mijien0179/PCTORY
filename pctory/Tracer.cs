@@ -161,7 +161,7 @@ namespace pctory
 
     internal class Tracer
     {
-        private uint hHookCode;
+        private uint? hHookCode;
         ProcessInfoList procInfoList;
 
         private wa.WinEventProc handler; //GC에 의한 이동 방지
@@ -175,7 +175,7 @@ namespace pctory
 
         public Tracer()
         {
-            hHookCode = 0;
+            hHookCode = null;
             procInfoList = new ProcessInfoList();
         }
         ~Tracer()
@@ -199,7 +199,7 @@ namespace pctory
         public Tracer RunTrace()
         {
             handler = GetForeGroundWindow;
-            if (hHookCode == 0) return this;
+            if (hHookCode != null && hHookCode != 0) return this;
 
             hHookCode = ah.SetHook(wa.EventCode.EVENT_SYSTEM_FOREGROUND, handler);
 
@@ -209,9 +209,9 @@ namespace pctory
         }
         public Tracer StopTrace()
         {
-            if (hHookCode != 0)
+            if (hHookCode != null && hHookCode != 0)
             {
-                if (ah.EndHook(hHookCode)) Trace.WriteLine("후킹 코드 바인딩 해제 성공");
+                if (ah.EndHook(hHookCode ?? 0)) Trace.WriteLine("후킹 코드 바인딩 해제 성공");
                 else Trace.WriteLine("후킹 코드 바인딩 해제 실패");
             }
             handler = null;
