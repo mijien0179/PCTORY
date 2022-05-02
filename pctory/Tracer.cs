@@ -73,6 +73,7 @@ namespace pctory
         }
         public (DateTime, string) GetWindowTitle(int i = -1)
         {
+            if (windowText.Count == 0) return (DateTime.MinValue, null);
             if (i < 0) return windowText.Last();
             if (i < windowText.Count()) return windowText[i];
             else return (DateTime.MinValue, null);
