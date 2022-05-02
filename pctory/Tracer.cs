@@ -11,7 +11,7 @@ using ah = pctory.ApiHelper;
 
 namespace pctory
 {
-    class PCB
+    public class PCB
     {
         [Flags]
         public enum InnerDataFlags : uint
@@ -67,6 +67,10 @@ namespace pctory
                 else containData &= ~InnerDataFlags.WINDOW_BACKGROUND;
             }
         }
+        public int GetWindowCount()
+        {
+            return windowText.Count;
+        }
         public (DateTime, string) GetWindowTitle(int i = -1)
         {
             if (i < 0) return windowText.Last();
@@ -83,7 +87,7 @@ namespace pctory
         }
     }
 
-    class ProcessInfoList
+    public class ProcessInfoList
     {
         Dictionary<string, List<PCB>> list; // 프로세스 이용 데이터를 저장한 리스트입니다.
         string last_key;                    // 마지막 접근한 데이터입니다.
@@ -145,8 +149,10 @@ namespace pctory
                 Add(proc, true);
                 return;
             }
-
-            list[proc.MainModule.FileName].Last().SaveWindowText((DateTime.Now, proc.MainWindowTitle));
+            if (!list[proc.MainModule.FileName].Last().GetWindowTitle().Item2.Equals(proc.MainWindowTitle))
+            {
+                list[proc.MainModule.FileName].Last().SaveWindowText((DateTime.Now, proc.MainWindowTitle));
+            }
         }
 
         /// <summary>
@@ -301,7 +307,10 @@ namespace pctory
             return this;
         }
 
-        
+        public void SaveCurrent()
+        {
+            ProcInfoList.LogEndProcTime();
+        }
 
 
     }

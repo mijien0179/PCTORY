@@ -34,6 +34,10 @@ namespace pctory
                     temp.Cells.AddRange(
                         new DataGridViewTextBoxCell()
                         {
+                            Value = key
+                        },
+                        new DataGridViewTextBoxCell()
+                        {
                             Value = Path.GetFileName(key)
                         },
                         new DataGridViewTextBoxCell()
@@ -59,10 +63,10 @@ namespace pctory
 
                 if (dataGridView1.InvokeRequired)
                 {
-                    dataGridView1.Invoke(new MethodInvoker( () =>
-                    {
-                        InvalidateText(ref row);
-                    }));
+                    dataGridView1.Invoke(new MethodInvoker(() =>
+                   {
+                       InvalidateText(ref row);
+                   }));
 
                 }
                 else
@@ -88,6 +92,7 @@ namespace pctory
 
             tracer = new Tracer(true).RunTrace();
 
+
             running = true;
             thread = new Thread(textUpdate);
             thread.Start();
@@ -95,6 +100,13 @@ namespace pctory
             DataGridView dv = this.dataGridView1;
 
             DataGridViewColumn[] col = new DataGridViewColumn[]{
+                new DataGridViewTextBoxColumn(){
+                    HeaderText = "프로그램",
+                    Name = "dvgColPath",
+                    CellTemplate = new DataGridViewTextBoxCell(),
+                    Visible = false,
+                    Width= 200
+                },
                 new DataGridViewTextBoxColumn(){
                     HeaderText = "프로그램",
                     Name = "dvgColProgram",
@@ -131,8 +143,26 @@ namespace pctory
                 }
             };
 
+            dv.CellDoubleClick += OpenDataView;
+
             dv.Columns.AddRange(col);
         }
+
+        private void OpenDataView(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridView dv = dataGridView1;
+            Form2 f2 = new Form2(tracer.ProcInfoList.GetData(dv.Rows[e.RowIndex].Cells[0].Value.ToString()))
+            {
+                Text = dv.Rows[e.RowIndex].Cells[1].Value.ToString()
+            };
+            f2.Owner = this;
+            f2.Show();
+
+        }
+
+
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -148,6 +178,16 @@ namespace pctory
                 thread.Abort();
                 MessageBox.Show("스레드 강제 종료");
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            GC.Collect();
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            tracer.SaveCurrent();
         }
     }
 }
