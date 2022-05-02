@@ -16,6 +16,7 @@ namespace pctory
         public Form1()
         {
             InitializeComponent();
+
             tracer.RunTrace();
         }
 
