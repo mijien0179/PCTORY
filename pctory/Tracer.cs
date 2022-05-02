@@ -24,13 +24,13 @@ namespace pctory
         InnerDataFlags containData;
         DateTime startTime;
         DateTime endTime;
-        List<(DateTime, string)> windowText;
+        List<(DateTime?, string)> windowText;
 
         public PCB(DateTime _startTime, DateTime _endTime, string _title)
         {
             StartTime = _startTime;
             EndTime = _endTime;
-            windowText = new List<(DateTime, string)>();
+            windowText = new List<(DateTime?, string)>();
             if (_title != null)
             {
                 windowText.Add((_startTime, _title));
@@ -71,12 +71,13 @@ namespace pctory
         {
             return windowText.Count;
         }
-        public (DateTime, string) GetWindowTitle(int i = -1)
+        public (DateTime?, string) GetWindowTitle(int i = -1)
         {
-            if (windowText.Count == 0) return (DateTime.MinValue, null);
+            if (windowText.Count == 0) return (null, null);
+
             if (i < 0) return windowText.Last();
-            if (i < windowText.Count()) return windowText[i];
-            else return (DateTime.MinValue, null);
+            else if (i < windowText.Count()) return windowText[i];
+            else return (null, null);
         }
         public void SaveWindowText(DateTime time, string text)
         {
@@ -106,7 +107,7 @@ namespace pctory
         /// <param name="data">넣을 데이터</param>
         private void Add(string key, PCB data)
         {
-            if(last_key != null)
+            if (last_key != null)
             {
                 PCB p = list[last_key].Last();
                 p.EndTime = data.StartTime;
@@ -145,7 +146,7 @@ namespace pctory
 
         public void SaveWindowText(Process proc, IntPtr hWnd)
         {
-            if(last_key == null)
+            if (last_key == null)
             {
                 Add(proc, true);
                 return;
@@ -185,6 +186,9 @@ namespace pctory
             else return list[key];
         }
 
+        public List<PCB> this[string key]{
+            get { return GetData(key); }
+        }
     }   
 
     internal class Tracer
