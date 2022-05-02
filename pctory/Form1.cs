@@ -15,6 +15,7 @@ namespace pctory
         public Form1()
         {
             InitializeComponent();
+            
         }
     }
 }

@@ -30,5 +30,23 @@ namespace pctory
             return wa.UnhookWinEvent(handle);
         }
 
+        public static TimeSpan SumTotalSpanTime(List<PCB> data)
+        {
+            TimeSpan result = TimeSpan.Zero;
+
+            for (int i = 0; i < data.Count(); ++i)
+            {
+                result += CalculateSpanTime(data[i]);
+            }
+
+            return result;
+
+        }
+        
+        public static TimeSpan CalculateSpanTime(PCB data)
+        {
+            return data.EndTime - data.StartTime;
+        }
+
     }
 }
