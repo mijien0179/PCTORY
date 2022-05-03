@@ -79,7 +79,6 @@ namespace pctory.design
             set { sizable = value; }
         }
 
-        [Flags]
         public enum ControlTypes: uint
         {
             Cancel = 1,
@@ -120,7 +119,7 @@ namespace pctory.design
 
         private Rectangle TitleButtonRectangle(ControlTypes type)
         {
-            return new Rectangle(Width - 30 * ((int)type), 0, 30, 34);
+            return new Rectangle(Width - 30 * ((int)type), 0, 30, 30);
         }
 
 
@@ -177,9 +176,11 @@ namespace pctory.design
 
         private void ControlPositioning()
         {
+            Point ps = new Point(Width - 1, 1);
             for(int i = 0; i < controlButton.Count; ++i)
             {
-                controlButton[i].Location = new Point(Width - 30 * (i + 1) - 1, 1);
+                ps.Offset(-30, 0);
+                controlButton[i].Location = ps;
             }
         }
 
@@ -206,6 +207,10 @@ namespace pctory.design
 
         protected override void OnResize(EventArgs e)
         {
+            if (DesignMode)
+            {
+                ControlPositioning();
+            }
             if (WindowState != FormWindowState.Minimized)
             {
                 int width, height;
@@ -220,6 +225,7 @@ namespace pctory.design
 
             if (maximizeButton != null) maximizeButton.Text = ControlButtonText(ControlTypes.Maximize);
             Invalidate();
+
             base.OnResize(e);
         }
 
@@ -282,7 +288,7 @@ namespace pctory.design
             base.OnMouseMove(e);
             isLButtonPress = e.Button == MouseButtons.Left;
             bool temp;
-            if (Sizable)
+            if (Sizable && WindowState != FormWindowState.Maximized)
             {
                 if ((temp = BorderTopLeft().Contains(e.Location)) || BorderBottomRight().Contains(e.Location))
                 {
@@ -360,6 +366,7 @@ namespace pctory.design
         {
             base.OnMouseLeave(e);
             isCaptionHover = false;
+            Cursor = bCursor;
             Invalidate();
         }
         protected override void OnPaint(PaintEventArgs e)
@@ -376,14 +383,15 @@ namespace pctory.design
                 {
                     e.Graphics.DrawLine(pen, CaptionRectangle.Left, CaptionRectangle.Bottom, CaptionRectangle.Right, CaptionRectangle.Bottom);
 
-                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Cancel));
-                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Maximize));
-                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Minimize));
-
                     Font font = new Font("webdings", 9.75f);
-                    TextRenderer.DrawText(e.Graphics, "r", font, TitleButtonRectangle(ControlTypes.Cancel), ForeColor);
-                    TextRenderer.DrawText(e.Graphics, "1", font, TitleButtonRectangle(ControlTypes.Maximize), ForeColor);
-                    TextRenderer.DrawText(e.Graphics, "0", font, TitleButtonRectangle(ControlTypes.Minimize), ForeColor);
+                    
+                    //e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Cancel));
+                    //e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Maximize));
+                    //e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Minimize));
+                    
+                    //TextRenderer.DrawText(e.Graphics, "r", font, TitleButtonRectangle(ControlTypes.Cancel), ForeColor);
+                    //TextRenderer.DrawText(e.Graphics, "1", font, TitleButtonRectangle(ControlTypes.Maximize), ForeColor);
+                    //TextRenderer.DrawText(e.Graphics, "0", font, TitleButtonRectangle(ControlTypes.Minimize), ForeColor);
 
                 }
             }
