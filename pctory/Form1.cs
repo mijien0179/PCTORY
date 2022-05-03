@@ -13,10 +13,19 @@ namespace pctory
 {
     public partial class Form1 : pctoryForm
     {
+        Tracer tracer = new Tracer(true);
         public Form1()
         {
             InitializeComponent();
-            
+
+            tracer.RunTrace();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Graph grap = new Graph(tracer.ProcInfoList);
+            grap.Owner = this;
+            grap.Show();
         }
     }
 }
