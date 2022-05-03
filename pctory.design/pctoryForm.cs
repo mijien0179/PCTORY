@@ -396,10 +396,12 @@ namespace pctory.design
             //e.Graphics.DrawLine(pen, 0, 0, Width, 0);   // top
 
             using (LinearGradientBrush brush = new LinearGradientBrush(new Point(0, 2), new Point(Width, 2), TitleBarColor[0], TitleBarColor[1]))
-                e.Graphics.FillRectangle(brush, Width - 1, 0, Width - 1, Height - 1);  // right
+                e.Graphics.FillRectangle(brush, 0, Height - 1, Width - 1, Height - 1);  // bottom
 
             using (Pen pen = new Pen(TitleBarColor[1], 1))
-                e.Graphics.DrawLine(pen, 0, Height - 1, Width - 1, Height - 1);  // bottom
+                e.Graphics.DrawLine(pen, Width - 1, 0, Width - 1, Height - 1);  // right
+
+
 
 
         }
