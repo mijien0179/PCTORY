@@ -13,6 +13,10 @@ namespace pctory.design
         {
             public const int WM_NCLBUTTONDOWN = 0xA1;
             public const int WM_NCLBUTTONDBLCLK = 0xA3;
+            public const int WM_NCHITTEST = 0x84;
+
+
+            public const int WM_NCRBUTTONDOWN= 0xA4;
             public const int WM_SYSCOMMAND = 0x0112;
         }
 

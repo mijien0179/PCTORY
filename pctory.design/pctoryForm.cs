@@ -190,11 +190,14 @@ namespace pctory.design
 
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == (int)Win32.Message.WM_SYSCOMMAND)
-            {
-                if (m.WParam == (IntPtr)0xF030)
+            if (m.Msg == Win32.Message.WM_NCHITTEST)
+            {   // CAPTION 영역 ClientArea에서 contextMenu 열지 못하게 차단
+                // CAPTION에 해당하는 client 영역을 CAPTION으로 인식하도록 설정
+                Point pc = PointToClient(new Point((int)m.LParam));
+                if (CaptionRectangle.Contains(pc))
                 {
-
+                    m.Result = (IntPtr)Win32.HitTest.HTCAPTION;
+                    return;
                 }
             }
 
@@ -263,7 +266,6 @@ namespace pctory.design
                     Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTCAPTION, (IntPtr)0);
                 }
             }
-
             base.OnMouseDown(e);
         }
         protected override void OnMouseUp(MouseEventArgs e)
