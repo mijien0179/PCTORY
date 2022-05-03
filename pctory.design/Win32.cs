@@ -9,11 +9,11 @@ namespace pctory.design
 {
     internal class Win32
     {
-        public enum Message
+        public static class Message
         {
-            WM_NCLBUTTONDOWN = 0xA1,
-
-            WM_SYSCOMMAND = 0x0112
+            public const int WM_NCLBUTTONDOWN = 0xA1;
+            public const int WM_NCLBUTTONDBLCLK = 0xA3;
+            public const int WM_SYSCOMMAND = 0x0112;
         }
 
         /// <summary>

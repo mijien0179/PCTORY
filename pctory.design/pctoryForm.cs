@@ -14,10 +14,9 @@ namespace pctory.design
 {
     public partial class pctoryForm : Form
     {
-        pctoryButton cancelButton= null;
-        pctoryButton maximizeButton= null;
-        pctoryButton minimizeButton= null;
-
+        List<pctoryButton> controlButton = new List<pctoryButton>();
+        pctoryButton cancelButton = null;
+        pctoryButton maximizeButton = null;
         public pctoryForm()
         {
 
@@ -25,12 +24,13 @@ namespace pctory.design
             bCursor = Cursor;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
-            
+
             FormBorderStyle = FormBorderStyle.None;
             BackColor = Color.White;
             StartPosition = FormStartPosition.CenterScreen;
             TitleFontFamily = new Font("나눔고딕", 12);
-            
+            Padding = new Padding(Padding.Left, 40, Padding.Right, Padding.Bottom);
+
         }
 
         #region Property
@@ -69,15 +69,24 @@ namespace pctory.design
             set { base.Text = value; Invalidate(); }
         }
 
-        private bool sizable;
-
         [DefaultValue(true)]
+        private bool sizable = true;
+
         [Category("pctory"), Description("크기 변경이 가능한 창인지 설정합니다.")]
         public bool Sizable
         {
             get { return sizable; }
-            set { sizable = value;}
+            set { sizable = value; }
         }
+
+        [Flags]
+        public enum ControlTypes: uint
+        {
+            Cancel = 1,
+            Maximize = 2,
+            Minimize = 3
+        }
+
 
         #endregion
 
@@ -101,30 +110,24 @@ namespace pctory.design
 
         private Rectangle BorderTop() => new Rectangle(4, 0, Width, 4);
         private Rectangle BorderLeft() => new Rectangle(0, 4, 4, Height - 4);
-        private Rectangle BorderRight() => new Rectangle(Width - 4 , 31, Width, Height - 4);
+        private Rectangle BorderRight() => new Rectangle(Width - 4, 31, Width, Height - 4);
         private Rectangle BorderBottom() => new Rectangle(4, Height - 4, Width - 4, Height - 4);
 
         private Rectangle BorderTopLeft() => new Rectangle(0, 0, 4, 4);
+        private Rectangle BorderTopRight() => new Rectangle(Width - 4, 0, Width, 4);
         private Rectangle BorderBottomLeft() => new Rectangle(0, Height - 4, 4, Height);
         private Rectangle BorderBottomRight() => new Rectangle(Width - 4, Height - 4, Width, Height);
 
-
-        private Rectangle TitleButtonRectangle(TitleButtonType type)
+        private Rectangle TitleButtonRectangle(ControlTypes type)
         {
             return new Rectangle(Width - 30 * ((int)type), 0, 30, 34);
         }
 
-        public enum TitleButtonType
-        {
-            Cancel = 1,
-            Maximize = 2,
-            Minimize = 3
-        }
 
-        private string ControlButtonText(TitleButtonType type)
+        private string ControlButtonText(ControlTypes type)
         {
-            if (type == TitleButtonType.Cancel) return "r";
-            else if (type == TitleButtonType.Maximize)
+            if (type == ControlTypes.Cancel) return "r";
+            else if (type == ControlTypes.Maximize)
                 if (WindowState == FormWindowState.Maximized) return "2";
                 else return "1";
 
@@ -132,7 +135,7 @@ namespace pctory.design
             return "0";
         }
 
-        private pctoryButton AddControlButton(TitleButtonType type)
+        private pctoryButton AddControlButton(ControlTypes type)
         {
             pctoryButton button = new pctoryButton
             {
@@ -142,7 +145,7 @@ namespace pctory.design
                 Border = false,
                 EnterSizing = false,
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
-                Size = new Size(30,30)
+                Size = new Size(30, 30),
             };
             button.Tag = type;
             button.Click += new EventHandler(ControlButtonEvent);
@@ -151,9 +154,9 @@ namespace pctory.design
 
         private void ControlButtonEvent(object s, EventArgs e)
         {
-            TitleButtonType tag = (TitleButtonType)(s as pctoryButton).Tag;
-            if (tag == TitleButtonType.Cancel) Close();
-            else if (tag == TitleButtonType.Maximize)
+            ControlTypes tag = (ControlTypes)(s as pctoryButton).Tag;
+            if (tag == ControlTypes.Cancel) Close();
+            else if (tag == ControlTypes.Maximize)
             {
                 if (WindowState == FormWindowState.Maximized)
                 {
@@ -166,7 +169,7 @@ namespace pctory.design
                 (s as pctoryButton).Text = ControlButtonText(tag);
                 Invalidate();
             }
-            else if (tag == TitleButtonType.Minimize)
+            else if (tag == ControlTypes.Minimize)
             {
                 WindowState = FormWindowState.Minimized;
             }
@@ -174,9 +177,10 @@ namespace pctory.design
 
         private void ControlPositioning()
         {
-            cancelButton.Location = new Point(Width - 30, 0);
-            maximizeButton.Location = new Point(Width - 60, 0);
-            minimizeButton.Location = new Point(Width - 90, 0);
+            for(int i = 0; i < controlButton.Count; ++i)
+            {
+                controlButton[i].Location = new Point(Width - 30 * (i + 1) - 1, 1);
+            }
         }
 
         #endregion
@@ -186,32 +190,32 @@ namespace pctory.design
 
         protected override void WndProc(ref Message m)
         {
-            if(m.Msg == (int)Win32.Message.WM_SYSCOMMAND)
+            if (m.Msg == (int)Win32.Message.WM_SYSCOMMAND)
             {
-                if(m.WParam == (IntPtr)0xF030)
+                if (m.WParam == (IntPtr)0xF030)
                 {
 
                 }
             }
-            
+
             base.WndProc(ref m);
         }
 
         protected override void OnResize(EventArgs e)
         {
-            if(WindowState != FormWindowState.Minimized)
+            if (WindowState != FormWindowState.Minimized)
             {
                 int width, height;
                 width = Size.Width;
-                height= Size.Height;
+                height = Size.Height;
                 bool isMinimum = false;
                 if (Size.Width < 150 && (isMinimum = true)) width = 150;
                 if (Size.Height < 50 && (isMinimum = true)) height = 50;
 
-                if(isMinimum) Size = new Size(width, height);
+                if (isMinimum) Size = new Size(width, height);
             }
 
-            if(maximizeButton != null) maximizeButton.Text = ControlButtonText(TitleButtonType.Maximize);
+            if (maximizeButton != null) maximizeButton.Text = ControlButtonText(ControlTypes.Maximize);
             Invalidate();
             base.OnResize(e);
         }
@@ -220,13 +224,22 @@ namespace pctory.design
         {
             base.OnLoad(e);
 
-            cancelButton =AddControlButton(TitleButtonType.Cancel);
-            maximizeButton = AddControlButton(TitleButtonType.Maximize);
-            minimizeButton = AddControlButton(TitleButtonType.Minimize);
+            cancelButton = AddControlButton(ControlTypes.Cancel);
+            controlButton.Add(cancelButton);
 
-            Controls.AddRange(new Control[] { cancelButton, maximizeButton, minimizeButton });
+            if (MaximizeBox)
+            {
+                maximizeButton = AddControlButton(ControlTypes.Maximize);
+                controlButton.Add(maximizeButton);
+            }
+            if (MinimizeBox)
+            {
+                controlButton.Add(AddControlButton(ControlTypes.Minimize));
+            }
 
             ControlPositioning();
+
+            Controls.AddRange(controlButton.ToArray());
 
             Invalidate();
         }
@@ -236,10 +249,15 @@ namespace pctory.design
         private bool isLButtonPress;
         protected override void OnMouseDown(MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 isLButtonPress = true;
-                if (CaptionRectangle.Contains(e.Location))
+                if (e.Clicks > 1)
+                {
+                    Win32.ReleaseCapture();
+                    Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDBLCLK, (IntPtr)Win32.HitTest.HTCAPTION, (IntPtr)0);
+                }
+                else if (CaptionRectangle.Contains(e.Location))
                 {
                     Win32.ReleaseCapture();
                     Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTCAPTION, (IntPtr)0);
@@ -262,55 +280,61 @@ namespace pctory.design
             base.OnMouseMove(e);
             isLButtonPress = e.Button == MouseButtons.Left;
             bool temp;
-            if ((temp = BorderTopLeft().Contains(e.Location)) || BorderBottomRight().Contains(e.Location))
+            if (Sizable)
             {
-                Cursor = Cursors.SizeNWSE;
-                if (isLButtonPress)
+                if ((temp = BorderTopLeft().Contains(e.Location)) || BorderBottomRight().Contains(e.Location))
                 {
-                    Win32.ReleaseCapture();
-                    if (temp) // TopLEFT
-                        Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTTOPLEFT, (IntPtr)0);
-                    else 
-                        Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTBOTTOMRIGHT, (IntPtr)0);
+                    Cursor = Cursors.SizeNWSE;
+                    if (isLButtonPress)
+                    {
+                        Win32.ReleaseCapture();
+                        if (temp) // TopLEFT
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTTOPLEFT, (IntPtr)0);
+                        else
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTBOTTOMRIGHT, (IntPtr)0);
+                    }
                 }
-            }
-            else if (BorderBottomLeft().Contains(e.Location))
-            {
-                Cursor = Cursors.SizeNESW;
-                if (isLButtonPress)
+                else if ((temp = BorderBottomLeft().Contains(e.Location)) || BorderTopRight().Contains(e.Location))
                 {
-                    Win32.ReleaseCapture();
-                    Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTBOTTOMLEFT, (IntPtr)0);
+                    Cursor = Cursors.SizeNESW;
+                    if (isLButtonPress)
+                    {
+                        Win32.ReleaseCapture();
+                        if (temp) // bottomleft
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTBOTTOMLEFT, (IntPtr)0);
+                        else
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTTOPRIGHT, (IntPtr)0);
+                    }
                 }
-            }
-            else if((temp = BorderLeft().Contains(e.Location)) || BorderRight().Contains(e.Location))
-            {
-                Cursor = Cursors.SizeWE;
-                if (isLButtonPress)
+                else if ((temp = BorderLeft().Contains(e.Location)) || BorderRight().Contains(e.Location))
                 {
-                    Win32.ReleaseCapture();
-                    if (temp) // Left
-                        Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTLEFT, (IntPtr)0);
-                    else
-                        Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTRIGHT, (IntPtr)0);
+                    Cursor = Cursors.SizeWE;
+                    if (isLButtonPress)
+                    {
+                        Win32.ReleaseCapture();
+                        if (temp) // Left
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTLEFT, (IntPtr)0);
+                        else
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTRIGHT, (IntPtr)0);
+                    }
                 }
-            }
-            else if((temp = BorderTop().Contains(e.Location)) || BorderBottom().Contains(e.Location))
-            {
-                Cursor = Cursors.SizeNS;
-                if (isLButtonPress)
+                else if ((temp = BorderTop().Contains(e.Location)) || BorderBottom().Contains(e.Location))
                 {
-                    Win32.ReleaseCapture();
-                    if (temp) // Top
-                        Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTTOP, (IntPtr)0);
-                    else
-                        Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTBOTTOM, (IntPtr)0);
-                }
+                    Cursor = Cursors.SizeNS;
+                    if (isLButtonPress)
+                    {
+                        Win32.ReleaseCapture();
+                        if (temp) // Top
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTTOP, (IntPtr)0);
+                        else
+                            Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTBOTTOM, (IntPtr)0);
+                    }
 
-            }
-            else
-            {
-                Cursor = bCursor;
+                }
+                else
+                {
+                    Cursor = bCursor;
+                }
             }
 
             if (CaptionRectangle.Contains(e.Location))
@@ -350,14 +374,14 @@ namespace pctory.design
                 {
                     e.Graphics.DrawLine(pen, CaptionRectangle.Left, CaptionRectangle.Bottom, CaptionRectangle.Right, CaptionRectangle.Bottom);
 
-                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(TitleButtonType.Cancel));
-                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(TitleButtonType.Maximize));
-                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(TitleButtonType.Minimize));
+                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Cancel));
+                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Maximize));
+                    e.Graphics.FillRectangle(brush, TitleButtonRectangle(ControlTypes.Minimize));
 
                     Font font = new Font("webdings", 9.75f);
-                    TextRenderer.DrawText(e.Graphics, "r", font, TitleButtonRectangle(TitleButtonType.Cancel), ForeColor  );
-                    TextRenderer.DrawText(e.Graphics, "1", font, TitleButtonRectangle(TitleButtonType.Maximize), ForeColor);
-                    TextRenderer.DrawText(e.Graphics, "0", font, TitleButtonRectangle(TitleButtonType.Minimize), ForeColor);
+                    TextRenderer.DrawText(e.Graphics, "r", font, TitleButtonRectangle(ControlTypes.Cancel), ForeColor);
+                    TextRenderer.DrawText(e.Graphics, "1", font, TitleButtonRectangle(ControlTypes.Maximize), ForeColor);
+                    TextRenderer.DrawText(e.Graphics, "0", font, TitleButtonRectangle(ControlTypes.Minimize), ForeColor);
 
                 }
             }
@@ -366,14 +390,17 @@ namespace pctory.design
             Font TitleFont = new Font(TitleFontFamily.FontFamily.Name, 13.0f);
             TextRenderer.DrawText(e.Graphics, base.Text, TitleFont, TitleRectangle, Color.Black, Color.Transparent, TextFormatFlags.Left);
 
-            using (Pen pen = new Pen(Color.Gray, 1))
-            {
-                //e.Graphics.DrawLine(pen, 0, 0, Width, 0);   // top
-                e.Graphics.DrawLine(pen, 0, 5, 0, Height-1);  // left
-                e.Graphics.DrawLine(pen, Width-1, 5, Width-1, Height-1);  // right
-                e.Graphics.DrawLine(pen, 0, Height-1, Width-1, Height-1);  // bottom
+            using (Pen pen = new Pen(TitleBarColor[0], 1))
+                e.Graphics.DrawLine(pen, 0, 5, 0, Height - 1);  // left
 
-            }
+            //e.Graphics.DrawLine(pen, 0, 0, Width, 0);   // top
+
+            using (LinearGradientBrush brush = new LinearGradientBrush(new Point(0, 2), new Point(Width, 2), TitleBarColor[0], TitleBarColor[1]))
+                e.Graphics.FillRectangle(brush, Width - 1, 0, Width - 1, Height - 1);  // right
+
+            using (Pen pen = new Pen(TitleBarColor[1], 1))
+                e.Graphics.DrawLine(pen, 0, Height - 1, Width - 1, Height - 1);  // bottom
+
 
         }
 
