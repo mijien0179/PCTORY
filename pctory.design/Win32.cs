@@ -11,7 +11,9 @@ namespace pctory.design
     {
         public enum Message
         {
-            WM_NCLBUTTONDOWN = 0xA1
+            WM_NCLBUTTONDOWN = 0xA1,
+
+            WM_SYSCOMMAND = 0x0112
         }
 
         /// <summary>
