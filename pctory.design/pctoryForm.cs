@@ -250,6 +250,7 @@ namespace pctory.design
 
 
         private bool isLButtonPress;
+        private bool isRButtonPress;
         protected override void OnMouseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -265,15 +266,21 @@ namespace pctory.design
                     Win32.ReleaseCapture();
                     Win32.SendMessage(Handle, (int)Win32.Message.WM_NCLBUTTONDOWN, (IntPtr)Win32.HitTest.HTCAPTION, (IntPtr)0);
                 }
+            }else if(e.Button == MouseButtons.Right){
+                isRButtonPress = true;
+                if (CaptionRectangle.Contains(e.Location))
+                {
+                    Win32.ReleaseCapture();
+                    Win32.SendMessage(Handle, (int)Win32.Message.WM_NCRBUTTONDOWN, (IntPtr)Win32.HitTest.HTCAPTION, (IntPtr)0);
+                }
             }
             base.OnMouseDown(e);
         }
         protected override void OnMouseUp(MouseEventArgs e)
         {
-            if (isLButtonPress)
-            {
-                isLButtonPress = false;
-            }
+            isLButtonPress = 
+                isRButtonPress = false;
+
             base.OnMouseUp(e);
         }
         private Cursor bCursor;
