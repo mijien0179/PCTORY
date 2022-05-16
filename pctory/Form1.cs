@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace pctory
 {
-    public partial class Form1 : Form
+    public partial class Form1 : pctoryForm
     {
         Tracer tracer = null;
         Thread thread;
@@ -78,6 +78,15 @@ namespace pctory
         public Form1()
         {
             InitializeComponent();
+
+            tracer.RunTrace();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Graph grap = new Graph(tracer.ProcInfoList);
+            grap.Owner = this;
+            grap.Show();
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
