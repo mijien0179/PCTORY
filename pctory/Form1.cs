@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
-
+using pctory.design;
 namespace pctory
 {
     public partial class Form1 : pctoryForm
@@ -37,18 +37,18 @@ namespace pctory
                         },
                         new DataGridViewTextBoxCell()
                         {
-                            Value = value.StartTime.ToString()
+                            Value = value.ForegroundTime.ToString()
                         },
                         new DataGridViewTextBoxCell()
                         {
-                            Value = value.EndTime == DateTime.MinValue ? "-" : value.EndTime.ToString()
+                            Value = value.BackgroundTime == DateTime.MinValue ? "-" : value.BackgroundTime.ToString()
                         },
                         new DataGridViewTextBoxCell()
                         {
-                            Value = tracer.ProcInfoList.GetData(key).Last().GetWindowTitle().Item2
+                            Value = tracer.ProcInfoList.GetData(key).Last().GetCaptionData()
                         }
-                      
-                    );
+                       
+                    ) ;
 
                     row.Add(temp);
                 }
@@ -79,15 +79,10 @@ namespace pctory
         {
             InitializeComponent();
 
-            tracer.RunTrace();
+            //tracer.RunTrace();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Graph grap = new Graph(tracer.ProcInfoList);
-            grap.Owner = this;
-            grap.Show();
-        }
+      
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             running = false;
