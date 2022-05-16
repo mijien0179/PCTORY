@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace pctory
 {
     /// <summary>
     /// 프로세스의 활성 정보를 담고있는 클래스입니다.
     /// </summary>
+    [Serializable]
     public class PCB
     {
         /// <summary>
@@ -173,6 +175,7 @@ namespace pctory
     /// <summary>
     /// <c>PCB</c>를 관리하는 컨테이너 클래스
     /// </summary>
+    [Serializable]
     public class ProcessInfoList
     {
         #region property
