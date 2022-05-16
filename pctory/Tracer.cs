@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.ComponentModel;
 
 namespace pctory
 {
@@ -239,6 +240,17 @@ namespace pctory
         }
 
         /// <summary>
+        /// [주의] key에 해당하는 리스트를 교체합니다. key에 해당하는 리스트가 없는 경우 등록됩니다.
+        /// </summary>
+        /// <param name="key">검사할 키</param>
+        /// <param name="newData">교체/등록할 리스트</param>
+        public void ReplaceList(string key, List<PCB> newData)
+        {
+            if (data.ContainsKey(key)) data.Remove(key);
+            data.Add(key, newData);
+        }
+
+        /// <summary>
         /// 마지막으로 저장한 <c>PCB</c>의 <c>BackgroundTime</c>을 설정합니다.
         /// </summary>
         public void LogBackgroundTime2LastPCB()
@@ -263,6 +275,15 @@ namespace pctory
             return null;
         }
         public List<PCB> this[string key] => GetData(key);
+
+        /// <summary>
+        /// 관리중인 키인지 검사합니다.
+        /// </summary>
+        /// <param name="key">검사할 키</param>
+        /// <returns>관리 여부</returns>
+        public bool ContainsKey(string key) => data.ContainsKey(key);
+
+
 
         #endregion
     }
