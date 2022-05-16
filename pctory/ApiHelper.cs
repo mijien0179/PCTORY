@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using wa = pctory.WinApi;
-using wae = pctory.WinApi.EventCode;
 
 /// <summary>
 /// 본 코드는 실제 PC 상태를 분석하는 코드가 아닌,
@@ -17,22 +15,25 @@ namespace pctory
     internal static class ApiHelper
     {
          
-        public static uint SetHook(wae EventCode, wa.WinEventProc WndProc, int procId = 0)
+        public static int SetHook(WinApi.EventCode EventCode, WinApi.WinEventProc WndProc, int procId = 0)
         {
-            return wa.SetWinEventHook(EventCode, EventCode,
-                IntPtr.Zero, WndProc, procId, 0,
-                wa.SetWinEventHookFlags.WINEVENT_OUTOFCONTEXT | wa.SetWinEventHookFlags.WINEVENT_SKIPOWNPROCESS);
+            return WinApi.SetWinEventHook(EventCode, EventCode, 0, WndProc, procId, 0, WinApi.SetWinEventHookFlags.WINEVENT_OUTOFCONTEXT | WinApi.SetWinEventHookFlags.WINEVENT_SKIPOWNPROCESS);
         }
 
-        public static bool EndHook(uint handle)
+        public static bool EndHook(int handle)
         {
             if (handle <= 0) return false;
-            return wa.UnhookWinEvent(handle);
+            return WinApi.UnhookWinEvent(handle);
         }
 
-        public static TimeSpan SumTotalSpanTime(List<PCB> data)
+        /// <summary>
+        /// PCB 리스트의 지속 시간 계산
+        /// </summary>
+        /// <param name="data">게산할 PCB 리스트</param>
+        /// <returns>지속시간</returns>
+        public static TimeSpan? SumTotalSpanTime(List<PCB> data)
         {
-            TimeSpan result = TimeSpan.Zero;
+            TimeSpan? result = TimeSpan.Zero;
 
             for (int i = 0; i < data.Count(); ++i)
             {
@@ -43,9 +44,14 @@ namespace pctory
 
         }
         
-        public static TimeSpan CalculateSpanTime(PCB data)
+        /// <summary>
+        /// PCB의 지속 시간 계산
+        /// </summary>
+        /// <param name="data">계산할 PCB 블럭</param>
+        /// <returns>지속시간</returns>
+        public static TimeSpan? CalculateSpanTime(PCB data)
         {
-            return data.EndTime - data.StartTime;
+            return data.BackgroundTime - data.ForegroundTime;
         }
 
     }

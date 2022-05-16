@@ -9,12 +9,13 @@ namespace pctory
 {
     internal class WinApi
     {
-        public enum EventCode : uint
+        public enum EventCode : int
         {
             EVENT_SYSTEM_FOREGROUND = 0x0003,
             EVENT_OBJECT_NAMECHANGE = 0x800C
         }
-        
+
+
         /// <summary>
         /// hWnd 핸들의 윈도우 타이틀 가져오기
         /// </summary>
@@ -23,14 +24,17 @@ namespace pctory
         /// <param name="maxCount">최대 길이</param>
         /// <returns>성공시 타이틀 길이</returns>
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpText, in int maxCount = 256);
+        public static extern int GetWindowText(int hWnd, StringBuilder lpText, in int maxCount = 256);
+        public delegate int dGetWindowText(int hWnd, StringBuilder ipText, in int maxCount = 256);
 
         /// <summary>
         /// 현재 활성 윈도우 핸들 로드
         /// </summary>
         /// <returns>활성 윈도우 핸들</returns>
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern IntPtr GetForegroundWindow();
+        public static extern int GetForegroundWindow();
+        public delegate int dGetForegroundWindow();
+
 
         /// <summary>
         /// hWnd 핸들을 가지는 윈도우의 프로세스 ID
@@ -39,8 +43,8 @@ namespace pctory
         /// <param name="wThreadProcessId">찾은 PID를 복사할 변수</param>
         /// <returns>스레드를 생성한 윈도우 핸들</returns>
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint wThreadProcessId);
-
+        public static extern int GetWindowThreadProcessId(int hWnd, out int wThreadProcessId);
+        public delegate int dGetWindowThreadProcessId(int hWnd, out int wThreadProcessId);
 
         /// <summary>
         /// WndProc 타입
@@ -52,7 +56,7 @@ namespace pctory
         /// <param name="idChild"></param>
         /// <param name="dwEventThread"></param>
         /// <param name="dwmsEventTime"></param>
-        public delegate void WinEventProc(IntPtr hWinEventHook, int iEvent, IntPtr hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime);
+        public delegate void WinEventProc(int hWinEventHook, int iEvent, int hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime);
 
         /// <summary>
         /// OS에서 이벤트 감지 시 실행할 콜백 함수 등록
@@ -66,7 +70,7 @@ namespace pctory
         /// <param name="dwflags"><c>SetWinEventHookFlags</c> 플래그</param>
         /// <returns>성공시 이벤트 hook ID값. 실패시 0</returns>
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern uint SetWinEventHook(WinApi.EventCode eventMin, WinApi.EventCode eventMax, IntPtr hmodWinEventProc, WinEventProc lpfnWinEventProc, int idProcess, int idThread, SetWinEventHookFlags dwflags);
+        public static extern int SetWinEventHook(WinApi.EventCode eventMin, WinApi.EventCode eventMax, int hmodWinEventProc, WinEventProc lpfnWinEventProc, int idProcess, int idThread, SetWinEventHookFlags dwflags);
 
         public enum SetWinEventHookFlags
         {
@@ -97,7 +101,7 @@ namespace pctory
         /// <param name="hWinEventHook"><c>SetWinEventHook</c>에서 등록한 반환 값<br/>: 이벤트 hook 핸들 값</param>
         /// <returns><c>True</c>시 성공</returns>
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern bool UnhookWinEvent(uint hWinEventHook);
+        public static extern bool UnhookWinEvent(int hWinEventHook);
         
     }
 }
