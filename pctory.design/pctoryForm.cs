@@ -29,7 +29,7 @@ namespace pctory.design
             BackColor = Color.White;
             StartPosition = FormStartPosition.CenterScreen;
             TitleFontFamily = new Font("나눔고딕", 12);
-            Padding = new Padding(Padding.Left, 40, Padding.Right, Padding.Bottom);
+            Padding = new Padding(1, 40, 1, 1);
 
         }
 
