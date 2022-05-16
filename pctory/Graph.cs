@@ -30,7 +30,7 @@ namespace pctory
                 var cnt = 0;
                 foreach (var i in item)
                 {
-                    cnt += i.GetWindowCount();
+                    cnt += i.CaptionCount();
                 }
                 chart1.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt); 
                 chart2.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
