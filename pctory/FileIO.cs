@@ -10,9 +10,9 @@ namespace pctory
 {
     static internal class FileIO
     {
-        static public void FileOutput(ProcessInfoList procinfo)
+        static public void FileOutput(ProcessInfoList procinfo, string filePath)
         {           
-            Stream wstream = new FileStream("C:\\a.dat", FileMode.Create);
+            Stream wstream = new FileStream(filePath, FileMode.Create);
             BinaryFormatter serial = new BinaryFormatter();
             serial.Serialize(wstream, procinfo);
             wstream.Close();
@@ -20,7 +20,7 @@ namespace pctory
         static public ProcessInfoList FileInput(string filePath)
         {
 
-            Stream rstream = new FileStream("C:\\a.dat", FileMode.Open);
+            Stream rstream = new FileStream(filePath, FileMode.Open);
             BinaryFormatter deserial = new BinaryFormatter();
             ProcessInfoList proc = new ProcessInfoList();
             proc = (ProcessInfoList)deserial.Deserialize(rstream);
