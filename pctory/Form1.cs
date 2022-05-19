@@ -25,7 +25,7 @@ namespace pctory
         {
             Graph grap = new Graph(tracer.ProcInfoList);
             grap.Owner = this;
-            grap.Show();
+            grap.ShowDialog();
         }
     }
 }
