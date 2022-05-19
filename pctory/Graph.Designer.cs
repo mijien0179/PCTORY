@@ -85,7 +85,7 @@ namespace pctory
             this.btnExit.TabIndex = 2;
             this.btnExit.Text = "종료";
             this.btnExit.UseVisualStyleBackColor = true;
-            this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            //this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
             // titlelabel
             // 
