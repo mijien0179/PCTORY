@@ -51,7 +51,7 @@ namespace pctory
                         },
                         new DataGridViewTextBoxCell()
                         {
-                            Value = LastnameValue.GetCaptionData().Value.Item2
+                            Value = LastnameValue.GetCaptionData().HasValue ? LastnameValue.GetCaptionData().Value.Item2 : "-" 
                         }
                     ) ;
 
@@ -80,6 +80,7 @@ namespace pctory
         private void InvalidateText(ref List<DataGridViewRow> data)
         {
             dataGridView1.Rows.Clear();
+            
             dataGridView1.Rows.AddRange(data.ToArray());
         }
         public Form1()
@@ -128,25 +129,26 @@ namespace pctory
 
             dv.Columns.AddRange(col);
 
-            
         }
 
       
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             running = false;
+
             tracer.StopTrace();
 
-            if (thread == null) return;
+            thread.Join();
+            
         }
 
         private void tsmiStop_Click(object sender, EventArgs e)
         {
-
             running = false;
+
             tracer.StopTrace();
 
-            if (thread == null) return;
+            MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
         }
     }
 }

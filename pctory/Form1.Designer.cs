@@ -65,14 +65,14 @@
             // tsmiStop
             // 
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(224, 26);
+            this.tsmiStop.Size = new System.Drawing.Size(152, 26);
             this.tsmiStop.Text = "중지";
             this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
             // 
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
-            this.tsmiSave.Size = new System.Drawing.Size(224, 26);
+            this.tsmiSave.Size = new System.Drawing.Size(152, 26);
             this.tsmiSave.Text = "불러오기";
             // 
             // 통계ToolStripMenuItem
@@ -123,6 +123,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Name = "Form1";
             this.Text = "PCTORY";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
