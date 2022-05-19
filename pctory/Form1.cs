@@ -142,6 +142,7 @@ namespace pctory
 
         private void tsmiStop_Click(object sender, EventArgs e)
         {
+
             running = false;
             tracer.StopTrace();
 
