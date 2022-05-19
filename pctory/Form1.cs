@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using pctory.design;
+using System.Runtime.Serialization.Formatters.Binary;
+
 namespace pctory
 {
     public partial class Form1 : pctoryForm
@@ -80,19 +82,6 @@ namespace pctory
             InitializeComponent();
 
             //tracer.RunTrace();
-        }
-
-      
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            running = false;
-            tracer.StopTrace();
-
-            if (thread == null) return;
-        }
-
-        private void tsmiStart_Click(object sender, EventArgs e)
-        {
             tracer = new Tracer(true).RunTrace();
 
             running = true;
@@ -106,21 +95,21 @@ namespace pctory
                     HeaderText = "프로그램",
                     Name = "dvgColProgram",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width= 200
+                    Width= 150
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     HeaderText = "최근 접근 시작 기록",
                     Name = "dvgColRecentAccess",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 250
+                    Width = 200
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     HeaderText = "최근 접근 종료 기록",
                     Name = "dvgColRecentExit",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 250
+                    Width = 200
                 },
                 new DataGridViewTextBoxColumn()
                 {
@@ -133,6 +122,20 @@ namespace pctory
 
             dv.Columns.AddRange(col);
         }
+
+      
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            running = false;
+            tracer.StopTrace();
+
+            if (thread == null) return;
+        }
+
+        //private void tsmiStart_Click(object sender, EventArgs e)
+        //{
+            
+        //}
 
         private void tsmiStop_Click(object sender, EventArgs e)
         {
