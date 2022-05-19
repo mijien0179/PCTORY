@@ -24,18 +24,22 @@ namespace pctory
         private void textUpdate()
         {
             List<DataGridViewRow> row = new List<DataGridViewRow>();
+            
             while (running)
             {
                 row.Clear();
                 foreach (var key in tracer.ProcInfoList.GetKeys())
                 {
                     var value = tracer.ProcInfoList.GetData(key).Last();
+                    var LastnameValue = tracer.ProcInfoList.GetData(key).Last();
 
                     DataGridViewRow temp = new DataGridViewRow();
+
                     temp.Cells.AddRange(
                         new DataGridViewTextBoxCell()
                         {
                             Value = Path.GetFileName(key)
+
                         },
                         new DataGridViewTextBoxCell()
                         {
@@ -47,9 +51,8 @@ namespace pctory
                         },
                         new DataGridViewTextBoxCell()
                         {
-                            Value = tracer.ProcInfoList.GetData(key).Last().GetCaptionData()
+                            Value = LastnameValue.GetCaptionData().Value.Item2
                         }
-                       
                     ) ;
 
                     row.Add(temp);
@@ -67,6 +70,8 @@ namespace pctory
                 {
                     InvalidateText(ref row);
                 }
+
+                
 
                 Thread.Sleep(3000);
             }
@@ -89,6 +94,7 @@ namespace pctory
             thread.Start();
 
             DataGridView dv = this.dataGridView1;
+            dv.ReadOnly = true;
 
             DataGridViewColumn[] col = new DataGridViewColumn[]{
                 new DataGridViewTextBoxColumn(){
@@ -121,6 +127,8 @@ namespace pctory
             };
 
             dv.Columns.AddRange(col);
+
+            
         }
 
       
@@ -132,15 +140,12 @@ namespace pctory
             if (thread == null) return;
         }
 
-        //private void tsmiStart_Click(object sender, EventArgs e)
-        //{
-            
-        //}
-
         private void tsmiStop_Click(object sender, EventArgs e)
         {
             running = false;
             tracer.StopTrace();
+
+            if (thread == null) return;
         }
     }
 }
