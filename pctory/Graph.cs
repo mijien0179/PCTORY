@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using pctory.design;
-
 namespace pctory
 {
     public partial class Graph : pctoryForm
@@ -23,7 +22,7 @@ namespace pctory
         }
 
         private void setText(string title) {
-            titlelabel.Text = title;
+            this.Text = title;
             if (title == "일간그래프") title = "일간";
             if (title == "주간그래프") title = "주간";
             if (title == "월간그래프") title = "월간";
@@ -39,24 +38,18 @@ namespace pctory
             {
                 var item = info.GetData(key);
                 var cnt = 0;
-                
+                TimeSpan? t= ApiHelper.SumTotalSpanTime(info.GetData(key));
                 foreach (var i in item)
                 {
                     cnt += i.CaptionCount();
                 }
-               
                 chart1.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt); 
                 chart2.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
-                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
-                chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
+                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.TotalSeconds : 0);
+                chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.TotalSeconds : 0);
             }
         }  
        
-
-        private void btnExit_Click_1(object sender, EventArgs e)
-        {
-            this.Close();
-        }
 
         private void chart1_Click(object sender, EventArgs e)
         {
@@ -66,6 +59,11 @@ namespace pctory
         private void chart4_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void Graph_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
