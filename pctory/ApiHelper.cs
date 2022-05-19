@@ -54,5 +54,32 @@ namespace pctory
             return data.BackgroundTime - data.ForegroundTime;
         }
 
+        /// <summary>
+        /// ProcessInfoList 두 개를 입력받아 하나로 합칩니다.
+        /// </summary>
+        /// <param name="p1">선행하는 데이터</param>
+        /// <param name="p2">추가할 데이터</param>
+        /// <returns>합쳐진 결과</returns>
+        public static ProcessInfoList CombineProcessInfoList(ProcessInfoList p1, ProcessInfoList p2)
+        {
+            ProcessInfoList result = new ProcessInfoList();
+
+            foreach (var p1key in p1.GetKeys())
+            {
+                result.ReplaceList(p1key, p1[p1key]);
+            }
+
+            foreach(var p2key in p2.GetKeys())
+            {
+                if (result.ContainsKey(p2key)) result[p2key].AddRange(p2[p2key]);
+                else
+                {
+                    result.ReplaceList(p2key, p2[p2key]);
+                }
+            }
+
+            return result;
+        }
+
     }
 }
