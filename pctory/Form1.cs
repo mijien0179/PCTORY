@@ -148,5 +148,26 @@ namespace pctory
 
             if (thread == null) return;
         }
+
+        private void 일간그래프ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Graph grep = new Graph(tracer.ProcInfoList,일간그래프ToolStripMenuItem.Text);
+            grep.Owner = this;
+            grep.ShowDialog();
+        }
+
+        private void 주간그래프ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Graph grep = new Graph(tracer.ProcInfoList, 주간그래프ToolStripMenuItem.Text);
+            grep.Owner = this;
+            grep.ShowDialog();
+        }
+
+        private void 월간그래프ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Graph grep = new Graph(tracer.ProcInfoList, 월간그래프ToolStripMenuItem.Text);
+            grep.Owner = this;
+            grep.ShowDialog();
+        }
     }
 }

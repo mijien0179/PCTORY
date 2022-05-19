@@ -14,14 +14,24 @@ namespace pctory
     public partial class Graph : pctoryForm
     {
         ProcessInfoList info;
-        public Graph(ProcessInfoList info)
+        public Graph(ProcessInfoList info,string title)
         {
             InitializeComponent();
-
+            setText(title);
             this.info = info;
             loadData();
         }
 
+        private void setText(string title) {
+            titlelabel.Text = title;
+            if (title == "일간그래프") title = "일간";
+            if (title == "주간그래프") title = "주간";
+            if (title == "월간그래프") title = "월간";
+            chart1.Titles[0].Text = title + " 사용 횟수";
+            chart2.Titles[0].Text = title + " 사용 횟수";
+            chart3.Titles[0].Text = title + " 사용 시간";
+            chart4.Titles[0].Text = title + " 사용 시간";
+        }
         private void loadData() {
             chart1.Series[0].Points.Clear();
             chart2.Series[0].Points.Clear();
@@ -29,15 +39,21 @@ namespace pctory
             {
                 var item = info.GetData(key);
                 var cnt = 0;
+                
                 foreach (var i in item)
                 {
                     cnt += i.CaptionCount();
                 }
+               
                 chart1.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt); 
                 chart2.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
+                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
+                chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
             }
         }  
-        private void btnExit_Click(object sender, EventArgs e)
+       
+
+        private void btnExit_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -45,6 +61,11 @@ namespace pctory
         private void chart1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void chart4_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
