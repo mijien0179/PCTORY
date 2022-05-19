@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using pctory.design;
 
 namespace pctory
 {
-    public partial class Graph : Form
+    public partial class Graph : pctoryForm
     {
         ProcessInfoList info;
         public Graph(ProcessInfoList info)
@@ -39,6 +40,11 @@ namespace pctory
         private void btnExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void chart1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
