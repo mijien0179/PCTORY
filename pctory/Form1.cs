@@ -152,14 +152,15 @@ namespace pctory
         
         private void InitializeFileDialog()
         {
+            DateTime now = DateTime.Now;
             
             ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            ofd.Filter = $"PCtory (*.{LogFileInfo.Extension})|*.{LogFileInfo.Extension}";
+            ofd.Filter = $"PCtory (*.{LogFileInfo.Extension})| *.{LogFileInfo.Extension}";
             ofd.FileName = "";
 
             sfd.InitialDirectory = ofd.InitialDirectory;
             sfd.Filter = ofd.Filter;
-            sfd.FileName = $"*.{LogFileInfo.Extension}";
+            sfd.FileName = $"{now.ToString().Substring(0,10)}.{LogFileInfo.Extension}";
         }
 
         private void tsmiOpenLogFile_Click(object sender, EventArgs e)
