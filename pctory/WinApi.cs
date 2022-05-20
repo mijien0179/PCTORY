@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
+using System.Diagnostics;
+
 namespace pctory
 {
     internal class WinApi
@@ -23,9 +25,19 @@ namespace pctory
         /// <param name="lpText">저장할 곳</param>
         /// <param name="maxCount">최대 길이</param>
         /// <returns>성공시 타이틀 길이</returns>
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder lpText, int maxCount = 256);
+        public delegate int dGetWindowText(IntPtr hWnd, StringBuilder ipText, int maxCount = 256);
+
         [DllImport("user32.dll", SetLastError = false)]
-        public static extern int GetWindowText(int hWnd, StringBuilder lpText, in int maxCount = 256);
-        public delegate int dGetWindowText(int hWnd, StringBuilder ipText, in int maxCount = 256);
+        public static extern int GetWindowTextLength(int hWnd);
+
+        public static string GetWindowText(int hWnd)
+        {
+            StringBuilder sb = new StringBuilder(GetWindowTextLength(hWnd));
+            GetWindowText((IntPtr)hWnd, sb, sb.Capacity + 1);
+            return sb.ToString();
+        }
 
         /// <summary>
         /// 현재 활성 윈도우 핸들 로드
