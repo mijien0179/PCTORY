@@ -1,6 +1,9 @@
 # PCTORY
 PC의 사용 기록을 자동으로 저장하고 보여주는 프로그램
 
+Dev
+---
+[칸반보드](https://github.com/users/mijien0179/projects/1)
 
 
 Require
