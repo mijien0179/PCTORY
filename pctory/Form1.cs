@@ -150,5 +150,15 @@ namespace pctory
 
             MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
         }
+
+        private void 시작프로그램등록ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ApiHelper.AddStartProgram("pctory", Application.ExecutablePath);
+        }
+
+        private void 시작프로그램해제ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ApiHelper.RemoveStartProgram("pctory");
+        }
     }
 }
