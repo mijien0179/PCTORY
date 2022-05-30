@@ -90,9 +90,6 @@ namespace pctory
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
 
-            running = true;
-            thread = new Thread(textUpdate);
-            thread.Start();
 
             DataGridView dv = this.dataGridView1;
             dv.ReadOnly = true;
@@ -156,6 +153,14 @@ namespace pctory
             fSetting fsetting = new fSetting();
             fsetting.Owner = this;
             fsetting.ShowDialog();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            running = true;
+            thread = new Thread(textUpdate);
+            thread.Start();
+
         }
     }
 }
