@@ -32,13 +32,13 @@
             this.시작ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.시작프로그램등록ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.시작프로그램해제ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.통계ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.주간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.월간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.월간그래프ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.시작프로그램등록ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.시작프로그램해제ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -70,15 +70,29 @@
             // tsmiStop
             // 
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(180, 22);
+            this.tsmiStop.Size = new System.Drawing.Size(178, 22);
             this.tsmiStop.Text = "중지";
             this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
             // 
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
-            this.tsmiSave.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSave.Size = new System.Drawing.Size(178, 22);
             this.tsmiSave.Text = "불러오기";
+            // 
+            // 시작프로그램등록ToolStripMenuItem
+            // 
+            this.시작프로그램등록ToolStripMenuItem.Name = "시작프로그램등록ToolStripMenuItem";
+            this.시작프로그램등록ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.시작프로그램등록ToolStripMenuItem.Text = "시작 프로그램 등록";
+            this.시작프로그램등록ToolStripMenuItem.Click += new System.EventHandler(this.시작프로그램등록ToolStripMenuItem_Click);
+            // 
+            // 시작프로그램해제ToolStripMenuItem
+            // 
+            this.시작프로그램해제ToolStripMenuItem.Name = "시작프로그램해제ToolStripMenuItem";
+            this.시작프로그램해제ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.시작프로그램해제ToolStripMenuItem.Text = "시작 프로그램 해제";
+            this.시작프로그램해제ToolStripMenuItem.Click += new System.EventHandler(this.시작프로그램해제ToolStripMenuItem_Click);
             // 
             // 통계ToolStripMenuItem
             // 
@@ -93,19 +107,19 @@
             // 주간그래프ToolStripMenuItem
             // 
             this.주간그래프ToolStripMenuItem.Name = "주간그래프ToolStripMenuItem";
-            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.주간그래프ToolStripMenuItem.Text = "일간그래프";
             // 
             // 월간그래프ToolStripMenuItem
             // 
             this.월간그래프ToolStripMenuItem.Name = "월간그래프ToolStripMenuItem";
-            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.월간그래프ToolStripMenuItem.Text = "주간그래프";
             // 
             // 월간그래프ToolStripMenuItem1
             // 
             this.월간그래프ToolStripMenuItem1.Name = "월간그래프ToolStripMenuItem1";
-            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(134, 22);
             this.월간그래프ToolStripMenuItem1.Text = "월간그래프";
             // 
             // dataGridView1
@@ -120,20 +134,6 @@
             this.dataGridView1.Size = new System.Drawing.Size(855, 520);
             this.dataGridView1.TabIndex = 1;
             // 
-            // 시작프로그램등록ToolStripMenuItem
-            // 
-            this.시작프로그램등록ToolStripMenuItem.Name = "시작프로그램등록ToolStripMenuItem";
-            this.시작프로그램등록ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.시작프로그램등록ToolStripMenuItem.Text = "시작 프로그램 등록";
-            this.시작프로그램등록ToolStripMenuItem.Click += new System.EventHandler(this.시작프로그램등록ToolStripMenuItem_Click);
-            // 
-            // 시작프로그램해제ToolStripMenuItem
-            // 
-            this.시작프로그램해제ToolStripMenuItem.Name = "시작프로그램해제ToolStripMenuItem";
-            this.시작프로그램해제ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.시작프로그램해제ToolStripMenuItem.Text = "시작 프로그램 해제";
-            this.시작프로그램해제ToolStripMenuItem.Click += new System.EventHandler(this.시작프로그램해제ToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -146,6 +146,7 @@
             this.Padding = new System.Windows.Forms.Padding(1, 32, 1, 1);
             this.Text = "PCTORY";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

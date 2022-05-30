@@ -81,43 +81,5 @@ namespace pctory
             return result;
         }
 
-        //시작 프로그램
-        private static readonly string regPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run";
-        private static Microsoft.Win32.RegistryKey GetRegKey(string regPath, bool writeable)
-        {
-            return Microsoft.Win32.Registry.CurrentUser.OpenSubKey(regPath, writeable);
-        }
-        public static void AddStartProgram(string name, string path)
-        {
-            using (var key = GetRegKey(regPath, true))
-            {
-                try
-                {
-                    if (key.GetValue(name) == null)
-                        key.SetValue(name, path);
-                    key.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-        }
-        public static void RemoveStartProgram(string name)
-        {
-            using (var key = GetRegKey(regPath, true))
-            {
-                try
-                {
-                    if (key.GetValue(name) != null)
-                        key.DeleteValue(name, false);
-                    key.Close();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-        }
     }
 }
