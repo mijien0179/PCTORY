@@ -90,9 +90,6 @@ namespace pctory
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
 
-            running = true;
-            thread = new Thread(textUpdate);
-            thread.Start();
 
             DataGridView dv = this.dataGridView1;
             dv.ReadOnly = true;
@@ -149,6 +146,26 @@ namespace pctory
             tracer.StopTrace();
 
             MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        }
+
+        private void 시작프로그램등록ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //ApiHelper.AddStartProgram("pctory", Application.ExecutablePath);
+            Setting.SetStartup();
+        }
+
+        private void 시작프로그램해제ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //ApiHelper.RemoveStartProgram("pctory");
+            Setting.ResetStartup();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            running = true;
+            thread = new Thread(textUpdate);
+            thread.Start();
+
         }
     }
 }
