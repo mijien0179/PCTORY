@@ -51,7 +51,7 @@ namespace pctory
                         },
                         new DataGridViewTextBoxCell()
                         {
-                            Value = LastnameValue.GetCaptionData().Value.Item2
+                            Value = LastnameValue.GetCaptionData().HasValue ? LastnameValue.GetCaptionData().Value.Item2 : "-" 
                         }
                     ) ;
 
@@ -80,6 +80,7 @@ namespace pctory
         private void InvalidateText(ref List<DataGridViewRow> data)
         {
             dataGridView1.Rows.Clear();
+            
             dataGridView1.Rows.AddRange(data.ToArray());
         }
         public Form1()
@@ -90,9 +91,6 @@ namespace pctory
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
 
-            running = true;
-            thread = new Thread(textUpdate);
-            thread.Start();
 
             DataGridView dv = this.dataGridView1;
             dv.ReadOnly = true;
@@ -129,25 +127,46 @@ namespace pctory
 
             dv.Columns.AddRange(col);
 
-            
         }
 
       
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             running = false;
+
             tracer.StopTrace();
 
-            if (thread == null) return;
+            thread.Join();
+            
         }
 
         private void tsmiStop_Click(object sender, EventArgs e)
         {
-
             running = false;
+
             tracer.StopTrace();
 
-            if (thread == null) return;
+            MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        }
+
+        private void 시작프로그램등록ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //ApiHelper.AddStartProgram("pctory", Application.ExecutablePath);
+            Setting.SetStartup();
+        }
+
+        private void 시작프로그램해제ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //ApiHelper.RemoveStartProgram("pctory");
+            Setting.ResetStartup();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            running = true;
+            thread = new Thread(textUpdate);
+            thread.Start();
+
         }
         
         private void InitializeFileDialog()
