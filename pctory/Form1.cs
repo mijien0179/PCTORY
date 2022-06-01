@@ -86,6 +86,7 @@ namespace pctory
         public Form1()
         {
             InitializeComponent();
+            InitializeFileDialog();
 
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
@@ -166,6 +167,47 @@ namespace pctory
             thread = new Thread(textUpdate);
             thread.Start();
 
+        }
+        
+        private void InitializeFileDialog()
+        {
+            DateTime now = DateTime.Now;
+            
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            ofd.Filter = $"PCtory (*.{LogFileInfo.Extension})| *.{LogFileInfo.Extension}";
+            ofd.FileName = "";
+
+            sfd.InitialDirectory = ofd.InitialDirectory;
+            sfd.Filter = ofd.Filter;
+            sfd.FileName = $"{now.ToString().Substring(0,10)}.{LogFileInfo.Extension}";
+        }
+
+        private void tsmiOpenLogFile_Click(object sender, EventArgs e)
+        {
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                FileIO.FileInput(ofd.FileName);
+            }
+        }
+
+        private void tsmiSaveLogFile_Click(object sender, EventArgs e)
+        {
+            if (ofd.FileName == "")
+            {
+                tsmiSaveAsLogFile_Click(tsmiSaveAsLogFile, EventArgs.Empty);
+                return;
+            }
+            sfd.FileName = ofd.FileName;
+            FileIO.FileOutput(tracer.ProcInfoList, sfd.FileName);
+        }
+
+        private void tsmiSaveAsLogFile_Click(object sender, EventArgs e)
+        {
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ofd.FileName = sfd.FileName;
+                tsmiSaveLogFile_Click(tsmiSaveLogFile, EventArgs.Empty);
+            }
         }
     }
 }

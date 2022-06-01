@@ -29,4 +29,13 @@ namespace pctory
         }
     }
     
+    public static class LogFileInfo
+    {
+        public static string Extension
+        {
+            get => "pctory";
+        }
+        
+
+    } 
 }
