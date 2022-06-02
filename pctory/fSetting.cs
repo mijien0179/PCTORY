@@ -14,17 +14,5 @@ namespace pctory
         {
             InitializeComponent();
         }
-
-        private void chkStartup_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkStartup.Checked)
-            {
-                
-            }
-            else
-            {
-
-            }
-        }
     }
 }
