@@ -100,32 +100,45 @@ namespace pctory
             Process.Start("cmd", $"/c schtasks -delete /tn \"\\pctory\" /f");
         }
 
-        public void FileConnectProgram()
-        { 
-            string path = @"C:\Users\김수연\source\repos\mijien0179\PCTORY\pctory\bin\Debug\pctory.exe";
-            object ob = 
+        public static void FileConnectProgram()
+        {
+            string extension = "." + LogFileInfo.Extension;
+            string filetype = "pctory";
+            string exttype = LogFileInfo.Extension + extension + ".v1";
+            string filename = LogFileInfo.Extension+".exe";
             using (RegistryKey ckey = Registry.CurrentUser.OpenSubKey(@"Software\Classes", true))
             {
-                using(RegistryKey fkey = ckey.CreateSubKey(".pctory"))
+                using(RegistryKey fkey = ckey.CreateSubKey(extension))
                 {
-                    fkey.SetValue(null,filetype)
+                    fkey.SetValue(null, exttype);
                 }
-                using(RegistryKey ftkey = ckey.CreateSubKey(fileType))
+
+                using(RegistryKey ftkey = ckey.CreateSubKey(exttype))
                 {
-                    ftkey.SetValue(null, fileDescription);
+                    ftkey.SetValue(null, filetype);
                     using(RegistryKey skey = ftkey.CreateSubKey("shell"))
                     {
                         using(RegistryKey okey = skey.CreateSubKey("open"))
                         {
-                            using(RegistryKey comkey = skey.CreateSubKey("command"))
+                            using(RegistryKey comkey = okey.CreateSubKey("command"))
                             {
-                                string command = string.Format("\"{0}\"\"%1\"", path);
+                                string exepath = Application.ExecutablePath;
+                                string command = string.Format("\"{0}\" \"%1\"", exepath);
                                 comkey.SetValue(null, command);
                             }
                         }
                     }
                 }
             }
+        }
+        public static void DeleteRegistry(RegistryKey key, string keyName, bool delAllSubkey)
+        {
+            if ((key.OpenSubKey(keyName) != null) == false)
+                return;
+            if (delAllSubkey == true)
+                key.DeleteSubKeyTree(keyName);
+            else
+                key.DeleteSubKey(keyName);
         }
     }
 
