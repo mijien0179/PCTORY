@@ -69,7 +69,7 @@
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
-            this.tsmiSave.Size = new System.Drawing.Size(150, 22);
+            this.tsmiSave.Size = new System.Drawing.Size(180, 22);
             this.tsmiSave.Text = "로그 불러오기";
             // 
             // 통계ToolStripMenuItem
@@ -85,19 +85,19 @@
             // 주간그래프ToolStripMenuItem
             // 
             this.주간그래프ToolStripMenuItem.Name = "주간그래프ToolStripMenuItem";
-            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.주간그래프ToolStripMenuItem.Text = "일간그래프";
             // 
             // 월간그래프ToolStripMenuItem
             // 
             this.월간그래프ToolStripMenuItem.Name = "월간그래프ToolStripMenuItem";
-            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
+            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.월간그래프ToolStripMenuItem.Text = "주간그래프";
             // 
             // 월간그래프ToolStripMenuItem1
             // 
             this.월간그래프ToolStripMenuItem1.Name = "월간그래프ToolStripMenuItem1";
-            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(134, 22);
+            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.월간그래프ToolStripMenuItem1.Text = "월간그래프";
             // 
             // 도구TToolStripMenuItem
@@ -113,18 +113,19 @@
             // tsmiStop
             // 
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(174, 22);
+            this.tsmiStop.Size = new System.Drawing.Size(180, 22);
             this.tsmiStop.Text = "트레이서 일시중지";
+            this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(171, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // 설정OToolStripMenuItem
             // 
             this.설정OToolStripMenuItem.Name = "설정OToolStripMenuItem";
-            this.설정OToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.설정OToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.설정OToolStripMenuItem.Text = "설정(&O)";
             this.설정OToolStripMenuItem.Click += new System.EventHandler(this.설정OToolStripMenuItem_Click);
             // 
