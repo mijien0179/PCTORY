@@ -86,7 +86,7 @@
             // tsmiOpenLogFile
             // 
             this.tsmiOpenLogFile.Name = "tsmiOpenLogFile";
-            this.tsmiOpenLogFile.Size = new System.Drawing.Size(178, 22);
+            this.tsmiOpenLogFile.Size = new System.Drawing.Size(180, 22);
             this.tsmiOpenLogFile.Text = "열기(&O)";
             this.tsmiOpenLogFile.Click += new System.EventHandler(this.tsmiOpenLogFile_Click);
             // 
@@ -95,14 +95,14 @@
             this.tsmiSaveLogFile.Name = "tsmiSaveLogFile";
             this.tsmiSaveLogFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.tsmiSaveLogFile.ShowShortcutKeys = false;
-            this.tsmiSaveLogFile.Size = new System.Drawing.Size(178, 22);
+            this.tsmiSaveLogFile.Size = new System.Drawing.Size(180, 22);
             this.tsmiSaveLogFile.Text = "저장(&S)";
             this.tsmiSaveLogFile.Click += new System.EventHandler(this.tsmiSaveLogFile_Click);
             // 
             // tsmiSaveAsLogFile
             // 
             this.tsmiSaveAsLogFile.Name = "tsmiSaveAsLogFile";
-            this.tsmiSaveAsLogFile.Size = new System.Drawing.Size(178, 22);
+            this.tsmiSaveAsLogFile.Size = new System.Drawing.Size(180, 22);
             this.tsmiSaveAsLogFile.Text = "다른 이름으로 저장";
             this.tsmiSaveAsLogFile.Click += new System.EventHandler(this.tsmiSaveAsLogFile_Click);
             // 
@@ -141,21 +141,21 @@
             // 주간그래프ToolStripMenuItem
             // 
             this.주간그래프ToolStripMenuItem.Name = "주간그래프ToolStripMenuItem";
-            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.주간그래프ToolStripMenuItem.Text = "일간그래프";
             this.주간그래프ToolStripMenuItem.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // 월간그래프ToolStripMenuItem
             // 
             this.월간그래프ToolStripMenuItem.Name = "월간그래프ToolStripMenuItem";
-            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.월간그래프ToolStripMenuItem.Text = "주간그래프";
             this.월간그래프ToolStripMenuItem.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // 월간그래프ToolStripMenuItem1
             // 
             this.월간그래프ToolStripMenuItem1.Name = "월간그래프ToolStripMenuItem1";
-            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(134, 22);
             this.월간그래프ToolStripMenuItem1.Text = "월간그래프";
             this.월간그래프ToolStripMenuItem1.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 

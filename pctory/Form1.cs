@@ -196,7 +196,7 @@ namespace pctory
         {
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                FileIO.FileInput(ofd.FileName);
+                new fViewer(ofd.FileName).Show();
             }
         }
 
