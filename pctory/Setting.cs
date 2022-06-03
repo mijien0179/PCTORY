@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-using TaskScheduler;
-using System.Xml;
 using System.Diagnostics;
 
 namespace pctory

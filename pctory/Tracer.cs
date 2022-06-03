@@ -388,9 +388,9 @@ namespace pctory
             ForegroundHandle = hWnd; // apiGetForegroundWindow();
             int windowHandle;
             apiGetWindowThreadProcessId(ForegroundHandle, out windowHandle);
-            Process proc = Process.GetProcessById(windowHandle);
             try
             {
+                Process proc = Process.GetProcessById(windowHandle);
                 if (!proc.HasExited)
                 {
                     ActiveProcessPath = proc.MainModule.FileName;
@@ -411,6 +411,7 @@ namespace pctory
                 }
 
             }
+            catch (ArgumentException) { } // 이미 종료된 프로세스
             catch (Exception ex)
             {
                 Trace.WriteLine(ex.Message);
