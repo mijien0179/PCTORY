@@ -15,8 +15,8 @@ namespace pctory
     {
         public static class RegKey
         {
-            public static string overrideLogSaveLoc 
-                // 로그 데이터의 저장을 새 위치로 저장할지 여부를 결정하는 데이터 // bool
+            public static string overrideLogSaveLoc
+            // 로그 데이터의 저장을 새 위치로 저장할지 여부를 결정하는 데이터 // bool
             {
                 get => "overrideLogSaveLoc";
             }
@@ -50,7 +50,7 @@ namespace pctory
                 bool value = false;
 
                 if (rKey.GetValueNames().Contains(RegKey.overrideLogSaveLoc))
-                     value = Convert.ToInt32(rKey.GetValue(RegKey.overrideLogSaveLoc)) == 0 ? false : true ;
+                    value = Convert.ToInt32(rKey.GetValue(RegKey.overrideLogSaveLoc)) == 0 ? false : true;
 
                 rKey.Close();
                 return value;
@@ -63,7 +63,7 @@ namespace pctory
             }
         }
 
-            
+
         /// <summary>
         /// <para>로그 데이터를 쓸 위치입니다.</para>
         /// <para>기본 위치: 프로그램 실행 위치\Log</para>
@@ -90,7 +90,7 @@ namespace pctory
         public static void SetStartup()
         {
 
-            Process.Start("cmd",$"/c schtasks -create /sc onlogon /tn \"\\pctory\\autorun\" /tr \"{Application.ExecutablePath} --autorun\" /RL HIGHEST");
+            Process.Start("cmd", $"/c schtasks -create /sc onlogon /tn \"\\pctory\\autorun\" /tr \"{Application.ExecutablePath} --autorun\" /RL HIGHEST");
 
         }
 
@@ -104,23 +104,23 @@ namespace pctory
         {
             string extension = "." + LogFileInfo.Extension;
             string filetype = "pctory";
-            string exttype = LogFileInfo.Extension + extension + ".v1";
-            string filename = LogFileInfo.Extension+".exe";
+            string exttype = LogFileInfo.Extension + extension;
+            string filename = LogFileInfo.Extension + ".exe";
             using (RegistryKey ckey = Registry.CurrentUser.OpenSubKey(@"Software\Classes", true))
             {
-                using(RegistryKey fkey = ckey.CreateSubKey(extension))
+                using (RegistryKey fkey = ckey.CreateSubKey(extension))
                 {
                     fkey.SetValue(null, exttype);
                 }
 
-                using(RegistryKey ftkey = ckey.CreateSubKey(exttype))
+                using (RegistryKey ftkey = ckey.CreateSubKey(exttype))
                 {
                     ftkey.SetValue(null, filetype);
-                    using(RegistryKey skey = ftkey.CreateSubKey("shell"))
+                    using (RegistryKey skey = ftkey.CreateSubKey("shell"))
                     {
-                        using(RegistryKey okey = skey.CreateSubKey("open"))
+                        using (RegistryKey okey = skey.CreateSubKey("open"))
                         {
-                            using(RegistryKey comkey = okey.CreateSubKey("command"))
+                            using (RegistryKey comkey = okey.CreateSubKey("command"))
                             {
                                 string exepath = Application.ExecutablePath;
                                 string command = string.Format("\"{0}\" \"%1\"", exepath);
@@ -131,14 +131,12 @@ namespace pctory
                 }
             }
         }
-        public static void DeleteRegistry(RegistryKey key, string keyName, bool delAllSubkey)
+        public static void DeleteRegistry()
         {
-            if ((key.OpenSubKey(keyName) != null) == false)
-                return;
-            if (delAllSubkey == true)
-                key.DeleteSubKeyTree(keyName);
-            else
-                key.DeleteSubKey(keyName);
+            string extension = "." + LogFileInfo.Extension;
+            string exttype = LogFileInfo.Extension + extension;
+            Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKey(extension);
+            Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKeyTree(exttype);
         }
     }
 
