@@ -16,6 +16,10 @@ namespace pctory
 {
     public partial class Form1 : pctoryForm
     {
+        string[] args;
+
+        bool closer = false;
+
         Tracer tracer = null;
         Thread thread;
 
@@ -83,7 +87,7 @@ namespace pctory
             
             dataGridView1.Rows.AddRange(data.ToArray());
         }
-        public Form1()
+        public Form1(string[] args)
         {
             InitializeComponent();
             InitializeFileDialog();
@@ -91,6 +95,7 @@ namespace pctory
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
 
+            this.args = args;
 
             DataGridView dv = this.dataGridView1;
             dv.ReadOnly = true;
@@ -132,12 +137,12 @@ namespace pctory
       
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Hide();
+            if(!closer) e.Cancel = true;
+
             running = false;
-
             tracer.StopTrace();
-
             thread.Join();
-            
         }
 
         private void tsmiStop_Click(object sender, EventArgs e)
@@ -149,26 +154,21 @@ namespace pctory
             MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
         }
 
-        private void 시작프로그램등록ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //ApiHelper.AddStartProgram("pctory", Application.ExecutablePath);
-            Setting.SetStartup();
-        }
-
-        private void 시작프로그램해제ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //ApiHelper.RemoveStartProgram("pctory");
-            Setting.ResetStartup();
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             running = true;
             thread = new Thread(textUpdate);
             thread.Start();
 
-            Visible = false;
-            ShowInTaskbar = false;
+            if (args.Contains("--autorun"))
+            {
+                Visible = false;
+                ShowInTaskbar = false;
+
+                args = (from d in args
+                       where d != "--autorun"
+                       select d).ToArray();
+            }
             
         }
         
@@ -227,20 +227,25 @@ namespace pctory
 
         }
 
-        private void notifyIcon1_Click(object sender, EventArgs e)
+        private void 종료ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Visible = true;
-            ShowInTaskbar = true;
-            WindowState = FormWindowState.Normal;
+            closer = true;
+            Close();
         }
 
-        private void Form1_Resize(object sender, EventArgs e)
+        private void noti_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (WindowState == FormWindowState.Minimized)
-            {
-                Visible = false;
-                ShowInTaskbar = false;
-            }
+            OpenForm();
+        }
+
+        private void OpenForm()
+        {
+            Show();
+        }
+
+        private void 열기ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenForm();
         }
     }
 }

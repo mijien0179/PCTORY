@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-using TaskScheduler;
-using System.Xml;
 using System.Diagnostics;
 
 namespace pctory
@@ -17,7 +15,7 @@ namespace pctory
         public static void SetStartup()
         {
 
-            Process.Start("cmd",$"/c schtasks -create /sc onlogon /tn \"\\pctory\\autorun\" /tr \"{Application.ExecutablePath}\" /RL HIGHEST");
+            Process.Start("cmd",$"/c schtasks -create /sc onlogon /tn \"\\pctory\\autorun\" /tr \"{Application.ExecutablePath} --autorun\" /RL HIGHEST");
 
         }
 
