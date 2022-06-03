@@ -7,14 +7,12 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Microsoft.Win32;
-
 using System.Diagnostics;
 
 namespace pctory
 {
     internal class Setting
     {
-
         public static class RegKey
         {
             public static string overrideLogSaveLoc 
@@ -89,8 +87,6 @@ namespace pctory
                 rKey.SetValue(RegKey.LogSaveLoc, value, RegistryValueKind.String);
             }
         }
-
-
         public static void SetStartup()
         {
 

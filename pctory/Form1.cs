@@ -86,6 +86,7 @@ namespace pctory
         public Form1()
         {
             InitializeComponent();
+            InitializeFileDialog();
 
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
@@ -148,11 +149,24 @@ namespace pctory
             MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
         }
 
+
         private void 설정OToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fSetting fsetting = new fSetting();
             fsetting.Owner = this;
             fsetting.ShowDialog();
+
+        private void 시작프로그램등록ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //ApiHelper.AddStartProgram("pctory", Application.ExecutablePath);
+            Setting.SetStartup();
+        }
+
+        private void 시작프로그램해제ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //ApiHelper.RemoveStartProgram("pctory");
+            Setting.ResetStartup();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -161,6 +175,47 @@ namespace pctory
             thread = new Thread(textUpdate);
             thread.Start();
 
+        }
+        
+        private void InitializeFileDialog()
+        {
+            DateTime now = DateTime.Now;
+            
+            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            ofd.Filter = $"PCtory (*.{LogFileInfo.Extension})| *.{LogFileInfo.Extension}";
+            ofd.FileName = "";
+
+            sfd.InitialDirectory = ofd.InitialDirectory;
+            sfd.Filter = ofd.Filter;
+            sfd.FileName = $"{now.ToString().Substring(0,10)}.{LogFileInfo.Extension}";
+        }
+
+        private void tsmiOpenLogFile_Click(object sender, EventArgs e)
+        {
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                FileIO.FileInput(ofd.FileName);
+            }
+        }
+
+        private void tsmiSaveLogFile_Click(object sender, EventArgs e)
+        {
+            if (ofd.FileName == "")
+            {
+                tsmiSaveAsLogFile_Click(tsmiSaveAsLogFile, EventArgs.Empty);
+                return;
+            }
+            sfd.FileName = ofd.FileName;
+            FileIO.FileOutput(tracer.ProcInfoList, sfd.FileName);
+        }
+
+        private void tsmiSaveAsLogFile_Click(object sender, EventArgs e)
+        {
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                ofd.FileName = sfd.FileName;
+                tsmiSaveLogFile_Click(tsmiSaveLogFile, EventArgs.Empty);
+            }
         }
     }
 }

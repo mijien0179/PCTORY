@@ -295,9 +295,9 @@ namespace pctory
         #region GC 방지용
         private WinApi.WinEventProc apiHookForegroundWindow;        // instance가 여러개 만들어질 수 있으므로 non-static
         private WinApi.WinEventProc apiHookForegroundWindowTextChange; // instance가 여러개 만들어질 수 있으므로 non-static
-        private static WinApi.dGetWindowText apiGetWindowText = WinApi.GetWindowText;
-        private static WinApi.dGetForegroundWindow apiGetForegroundWindow = WinApi.GetForegroundWindow;
-        private static WinApi.dGetWindowThreadProcessId apiGetWindowThreadProcessId = WinApi.GetWindowThreadProcessId;
+        private static WinApi.dGetWindowText apiGetWindowText = new WinApi.dGetWindowText(WinApi.GetWindowText);
+        private static WinApi.dGetForegroundWindow apiGetForegroundWindow = new WinApi.dGetForegroundWindow(WinApi.GetForegroundWindow);
+        private static WinApi.dGetWindowThreadProcessId apiGetWindowThreadProcessId = new WinApi.dGetWindowThreadProcessId(WinApi.GetWindowThreadProcessId);
         #endregion
 
         ProcessInfoList procInfoList;
@@ -343,6 +343,17 @@ namespace pctory
             set { hookCodeForegroundTextChange = value; }
         }
         private int hookCodeForegroundTextChange;
+
+        /// <summary>
+        /// 현재 활성 윈도우의 프로세스
+        /// </summary>
+        private string ActiveProcessPath
+        {
+            get { return activeProcPath; }
+            set { activeProcPath = value; }
+        }
+        private string activeProcPath;
+
         #endregion
 
         #region constructor
@@ -354,8 +365,8 @@ namespace pctory
             HookCodeForeground = 0;
             HookCodeForegroundTextChange = 0;
 
-            apiHookForegroundWindow = hookForegroundWindow;
-            apiHookForegroundWindowTextChange = hookForegrondTextChange;
+            apiHookForegroundWindow = new WinApi.WinEventProc(hookForegroundWindow);
+            apiHookForegroundWindowTextChange = new WinApi.WinEventProc(hookForegrondTextChange);
 
             ProcInfoList = new ProcessInfoList();
         }
@@ -382,23 +393,20 @@ namespace pctory
             {
                 if (!proc.HasExited)
                 {
-                    StringBuilder sb = new StringBuilder(256);
-                    WinApi.GetWindowText(ForegroundHandle, sb);
+                    ActiveProcessPath = proc.MainModule.FileName;
                     ProcInfoList.Add(proc.MainModule.FileName);
 
                     if (WindowTextSaving)
                     {
+
+                        string sb = WinApi.GetWindowText(ForegroundHandle);
+
+                        ProcInfoList.Add(proc.MainModule.FileName, sb.ToString());
+
                         if (HookCodeForegroundTextChange != 0) ApiHelper.EndHook(HookCodeForegroundTextChange);
 
                         HookCodeForegroundTextChange = ApiHelper.SetHook(WinApi.EventCode.EVENT_OBJECT_NAMECHANGE, apiHookForegroundWindowTextChange, proc.Id);
-                        // Trace.WriteLine(HookCodeForegroundTextChange);
-                        if (sb.ToString().Trim() == "")
-                        {
-                            sb.Clear();
-                            sb.Append(proc.MainWindowTitle);
-                        }
-                        ProcInfoList.Add(proc.MainModule.FileName, sb.ToString());
-                        Trace.WriteLine(sb.ToString());
+
                     }
                 }
 
@@ -411,35 +419,22 @@ namespace pctory
 
         private void hookForegrondTextChange(int hWinEventHook, int iEvent, int hWnd, int idObject, int idChild, int dwEventThread, int dwmsEventTime)
         {
-            if (hWnd != ForegroundHandle) return;
-
-            int windowHandle;
-            apiGetWindowThreadProcessId(ForegroundHandle, out windowHandle);
-            Process proc = Process.GetProcessById(windowHandle);
-            if (!proc.HasExited)
+            if (hWnd != ForegroundHandle || idObject != 0) return;
+            ForegroundHandle = apiGetForegroundWindow();
+            try
             {
-                try
+                string title = WinApi.GetWindowText(ForegroundHandle);
+                if (ProcInfoList[ActiveProcessPath].Last().GetCaptionData().Value.Item2 != title)
                 {
-                    StringBuilder sb = new StringBuilder(256);
-                    apiGetWindowText(ForegroundHandle, sb);
-                    if (sb.ToString().Trim() == "")
-                    {
-                        sb.Clear();
-                        sb.Append(proc.MainWindowTitle);
-                    }
-                    if (ProcInfoList[proc.MainModule.FileName].Last().GetCaptionData().Value.Item2 != sb.ToString())
-                    {
-                        Trace.WriteLine($"{ForegroundHandle} {hWnd}: {sb}");
-                        ProcInfoList.Add(proc.MainModule.FileName, sb.ToString());
-                    }
+                    ProcInfoList.Add(ActiveProcessPath, title);
+                }
 
-                }
-                catch (Exception ex)
-                {
+            }
+            catch (Exception ex)
+            {
 #if DEBUG
-                    Trace.WriteLine($"Text: {ex.Message}");
+                Trace.WriteLine($"Text: {ex.Message}");
 #endif
-                }
             }
         }
 
