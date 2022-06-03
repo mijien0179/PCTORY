@@ -53,12 +53,17 @@ namespace pctory
                 }
                 data_frequency.Add( key,cnt);
             }
-            //시간 넣기
+
+
+
+            #region 값들을 집어 넣는 함수
+            //변수
             double etc_time = 0;
             double etc_frequency = 0;
             var key_time = data.Values;
             var key_frequency = data_frequency.Values; // key값에 따른 빈도수  
             var value_frequency = data_frequency.Keys; // key값
+            //빈도수 넣기
             if (data_frequency.Count > 4)
             {
                 for (int i = data_frequency.Count; i > data_frequency.Count - 4; i--)
@@ -84,20 +89,32 @@ namespace pctory
                 }
             }
 
+            //시간 data 넣기
+            var timeslice = 1;
+            if (ApiHelper.SumTotalSpanTime(info.GetData(key_time[key_time.Count - 1])).Value.TotalSeconds > 3600)
+            {
+                timelabel.Text = "1 시간";
+                timeslice = 3600;
+            }
+            else if (ApiHelper.SumTotalSpanTime(info.GetData(key_time[key_time.Count - 1])).Value.TotalSeconds > 60)
+            {
+                timelabel.Text = "1 분";
+                timeslice = 60;
+            }
+            else timelabel.Text = "1 초";
 
             if (data.Count > 4)
             {
                 for (int i = data.Count; i > data.Count-4; i--)
                 {
-                    chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i-1]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i-1])).Value.TotalSeconds);
-                    chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i-1]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i-1])).Value.TotalSeconds);
+                    chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i-1]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i-1])).Value.TotalSeconds/timeslice);
+                    chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i-1]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i-1])).Value.TotalSeconds/timeslice);
                 }
                 for (int i = 0; i < data.Count - 4; i++)
                 {
-                    etc_time += ApiHelper.SumTotalSpanTime(info.GetData(key_time[i])).Value.TotalSeconds;
+                    etc_time += ApiHelper.SumTotalSpanTime(info.GetData(key_time[i])).Value.TotalSeconds/timeslice;
                    
                 }
-      
                 chart3.Series[0].Points.AddXY("기타", etc_time);
                 chart4.Series[0].Points.AddXY("기타", etc_time);
             }
@@ -105,15 +122,11 @@ namespace pctory
             {
                 for (int i = 0; i < data.Count; i++)
                 {
-                    chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i])).Value.TotalSeconds);
-                    chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i])).Value.TotalSeconds);
+                    chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i])).Value.TotalSeconds/timeslice);
+                    chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key_time[i]), ApiHelper.SumTotalSpanTime(info.GetData(key_time[i])).Value.TotalSeconds/timeslice);
                 }
             }
-
-
-
         }
-
-
+        #endregion
     }
 }
