@@ -43,6 +43,10 @@
             this.주간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.월간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.월간그래프ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.도구TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.설정OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
@@ -62,7 +66,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.파일ToolStripMenuItem,
             this.시작ToolStripMenuItem,
-            this.통계ToolStripMenuItem});
+            this.통계ToolStripMenuItem,
+            this.도구TToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(1, 32);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -113,6 +118,11 @@
             this.시작ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.시작ToolStripMenuItem.Text = "설정";
             // 
+            // tsmiSave
+            // 
+            this.tsmiSave.Name = "tsmiSave";
+            this.tsmiSave.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSave.Text = "로그 불러오기";
             // tsmiStop
             // 
             this.tsmiStop.Name = "tsmiStop";
@@ -161,15 +171,46 @@
             this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(134, 22);
             this.월간그래프ToolStripMenuItem1.Text = "월간그래프";
             // 
+            // 도구TToolStripMenuItem
+            // 
+            this.도구TToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiStop,
+            this.toolStripSeparator1,
+            this.설정OToolStripMenuItem});
+            this.도구TToolStripMenuItem.Name = "도구TToolStripMenuItem";
+            this.도구TToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.도구TToolStripMenuItem.Text = "도구(T&)";
+            // 
+            // tsmiStop
+            // 
+            this.tsmiStop.Name = "tsmiStop";
+            this.tsmiStop.Size = new System.Drawing.Size(180, 22);
+            this.tsmiStop.Text = "트레이서 일시중지";
+            this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // 설정OToolStripMenuItem
+            // 
+            this.설정OToolStripMenuItem.Name = "설정OToolStripMenuItem";
+            this.설정OToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.설정OToolStripMenuItem.Text = "설정(&O)";
+            this.설정OToolStripMenuItem.Click += new System.EventHandler(this.설정OToolStripMenuItem_Click);
+            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(1, 56);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 27;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView1.Size = new System.Drawing.Size(855, 520);
             this.dataGridView1.TabIndex = 1;
             // 
@@ -244,6 +285,11 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ToolStripMenuItem 월간그래프ToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem 시작ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 도구TToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 설정OToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiSave;
+        private System.Windows.Forms.ToolStripMenuItem tsmiStop;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tsmiStop;
         private System.Windows.Forms.ToolStripMenuItem 파일ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenLogFile;
