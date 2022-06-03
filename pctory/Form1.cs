@@ -149,7 +149,6 @@ namespace pctory
             MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
         }
 
-
         private void 설정OToolStripMenuItem_Click(object sender, EventArgs e)
         {
             fSetting fsetting = new fSetting();
