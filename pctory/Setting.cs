@@ -100,6 +100,8 @@ namespace pctory
             Process.Start("cmd", $"/c schtasks -delete /tn \"\\pctory\" /f");
         }
 
+        public static bool isreg=false;
+
         public static void FileConnectProgram()
         {
             string extension = "." + LogFileInfo.Extension;
@@ -130,13 +132,26 @@ namespace pctory
                     }
                 }
             }
+            SetIcon();
+            isreg = true;
         }
+
         public static void DeleteRegistry()
         {
+            if (isreg == true)
+            {
+                string extension = "." + LogFileInfo.Extension;
+                string exttype = LogFileInfo.Extension + extension;
+                Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKey(extension);
+                Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKeyTree(exttype);
+                Registry.ClassesRoot.DeleteSubKeyTree(extension);
+            }
+        }
+
+        public static void SetIcon()
+        {
             string extension = "." + LogFileInfo.Extension;
-            string exttype = LogFileInfo.Extension + extension;
-            Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKey(extension);
-            Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKeyTree(exttype);
+            Registry.ClassesRoot.CreateSubKey(extension).CreateSubKey("DefaultIcon").SetValue(null, Application.StartupPath+"\\Icon1.ico,2");
         }
     }
 

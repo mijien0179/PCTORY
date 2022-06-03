@@ -36,7 +36,6 @@
             this.tsmiSaveLogFile = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSaveAsLogFile = new System.Windows.Forms.ToolStripMenuItem();
             this.시작ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiRestart = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
             this.통계ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,8 +43,9 @@
             this.월간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.월간그래프ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.도구TToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
             this.설정OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
@@ -66,10 +66,10 @@
             this.시작ToolStripMenuItem,
             this.통계ToolStripMenuItem,
             this.도구TToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(1, 32);
+            this.menuStrip1.Location = new System.Drawing.Point(1, 40);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(855, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(977, 28);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -80,13 +80,13 @@
             this.tsmiSaveLogFile,
             this.tsmiSaveAsLogFile});
             this.파일ToolStripMenuItem.Name = "파일ToolStripMenuItem";
-            this.파일ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.파일ToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.파일ToolStripMenuItem.Text = "파일";
             // 
             // tsmiOpenLogFile
             // 
             this.tsmiOpenLogFile.Name = "tsmiOpenLogFile";
-            this.tsmiOpenLogFile.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenLogFile.Size = new System.Drawing.Size(222, 26);
             this.tsmiOpenLogFile.Text = "열기(&O)";
             this.tsmiOpenLogFile.Click += new System.EventHandler(this.tsmiOpenLogFile_Click);
             // 
@@ -95,14 +95,14 @@
             this.tsmiSaveLogFile.Name = "tsmiSaveLogFile";
             this.tsmiSaveLogFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.tsmiSaveLogFile.ShowShortcutKeys = false;
-            this.tsmiSaveLogFile.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSaveLogFile.Size = new System.Drawing.Size(222, 26);
             this.tsmiSaveLogFile.Text = "저장(&S)";
             this.tsmiSaveLogFile.Click += new System.EventHandler(this.tsmiSaveLogFile_Click);
             // 
             // tsmiSaveAsLogFile
             // 
             this.tsmiSaveAsLogFile.Name = "tsmiSaveAsLogFile";
-            this.tsmiSaveAsLogFile.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSaveAsLogFile.Size = new System.Drawing.Size(222, 26);
             this.tsmiSaveAsLogFile.Text = "다른 이름으로 저장";
             this.tsmiSaveAsLogFile.Click += new System.EventHandler(this.tsmiSaveAsLogFile_Click);
             // 
@@ -112,27 +112,20 @@
             this.tsmiRestart,
             this.tsmiSave});
             this.시작ToolStripMenuItem.Name = "시작ToolStripMenuItem";
-            this.시작ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.시작ToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.시작ToolStripMenuItem.Text = "설정";
-            // 
-            // tsmiStop
-            // 
-            this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(180, 22);
-            this.tsmiStop.Text = "트레이서 일시중지";
-            this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
             // 
             // tsmiRestart
             // 
             this.tsmiRestart.Name = "tsmiRestart";
-            this.tsmiRestart.Size = new System.Drawing.Size(180, 22);
+            this.tsmiRestart.Size = new System.Drawing.Size(224, 26);
             this.tsmiRestart.Text = "재시작";
             this.tsmiRestart.Click += new System.EventHandler(this.tsmiRestart_Click);
             // 
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
-            this.tsmiSave.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSave.Size = new System.Drawing.Size(224, 26);
             this.tsmiSave.Text = "불러오기";
             // 
             // 통계ToolStripMenuItem
@@ -142,25 +135,25 @@
             this.월간그래프ToolStripMenuItem,
             this.월간그래프ToolStripMenuItem1});
             this.통계ToolStripMenuItem.Name = "통계ToolStripMenuItem";
-            this.통계ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.통계ToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
             this.통계ToolStripMenuItem.Text = "통계";
             // 
             // 주간그래프ToolStripMenuItem
             // 
             this.주간그래프ToolStripMenuItem.Name = "주간그래프ToolStripMenuItem";
-            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.주간그래프ToolStripMenuItem.Text = "일간그래프";
             // 
             // 월간그래프ToolStripMenuItem
             // 
             this.월간그래프ToolStripMenuItem.Name = "월간그래프ToolStripMenuItem";
-            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.월간그래프ToolStripMenuItem.Text = "주간그래프";
             // 
             // 월간그래프ToolStripMenuItem1
             // 
             this.월간그래프ToolStripMenuItem1.Name = "월간그래프ToolStripMenuItem1";
-            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
             this.월간그래프ToolStripMenuItem1.Text = "월간그래프";
             // 
             // 도구TToolStripMenuItem
@@ -169,33 +162,40 @@
             this.tsmiStop,
             this.설정OToolStripMenuItem});
             this.도구TToolStripMenuItem.Name = "도구TToolStripMenuItem";
-            this.도구TToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.도구TToolStripMenuItem.Size = new System.Drawing.Size(71, 24);
             this.도구TToolStripMenuItem.Text = "도구(T&)";
             // 
-            // toolStripSeparator1
+            // tsmiStop
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.tsmiStop.Name = "tsmiStop";
+            this.tsmiStop.Size = new System.Drawing.Size(224, 26);
+            this.tsmiStop.Text = "트레이서 일시중지";
+            this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
             // 
             // 설정OToolStripMenuItem
             // 
             this.설정OToolStripMenuItem.Name = "설정OToolStripMenuItem";
-            this.설정OToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.설정OToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.설정OToolStripMenuItem.Text = "설정(&O)";
             this.설정OToolStripMenuItem.Click += new System.EventHandler(this.설정OToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(105, 6);
             // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(1, 56);
+            this.dataGridView1.Location = new System.Drawing.Point(1, 68);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 27;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(855, 520);
+            this.dataGridView1.Size = new System.Drawing.Size(977, 652);
             this.dataGridView1.TabIndex = 1;
             // 
             // ofd
@@ -212,37 +212,37 @@
             // 
             // notiContextMenu
             // 
+            this.notiContextMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.notiContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.열기ToolStripMenuItem,
             this.toolStripSeparator1,
             this.종료ToolStripMenuItem});
             this.notiContextMenu.Name = "notiContextMenu";
-            this.notiContextMenu.Size = new System.Drawing.Size(181, 76);
+            this.notiContextMenu.Size = new System.Drawing.Size(109, 58);
             // 
             // 열기ToolStripMenuItem
             // 
             this.열기ToolStripMenuItem.Name = "열기ToolStripMenuItem";
-            this.열기ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.열기ToolStripMenuItem.Size = new System.Drawing.Size(108, 24);
             this.열기ToolStripMenuItem.Text = "열기";
             this.열기ToolStripMenuItem.Click += new System.EventHandler(this.열기ToolStripMenuItem_Click);
             // 
             // 종료ToolStripMenuItem
             // 
             this.종료ToolStripMenuItem.Name = "종료ToolStripMenuItem";
-            this.종료ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.종료ToolStripMenuItem.Size = new System.Drawing.Size(108, 24);
             this.종료ToolStripMenuItem.Text = "종료";
             this.종료ToolStripMenuItem.Click += new System.EventHandler(this.종료ToolStripMenuItem_Click);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(857, 577);
+            this.ClientSize = new System.Drawing.Size(979, 721);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.menuStrip1);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Padding = new System.Windows.Forms.Padding(1, 32, 1, 1);
             this.Text = "PCTORY";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
