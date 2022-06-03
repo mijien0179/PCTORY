@@ -28,8 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.파일ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiOpenLogFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSaveLogFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiSaveAsLogFile = new System.Windows.Forms.ToolStripMenuItem();
             this.시작ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiRestart = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
             this.통계ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.주간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,14 +48,16 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.설정OToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.파일ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiOpenLogFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiSaveLogFile = new System.Windows.Forms.ToolStripMenuItem();
             this.ofd = new System.Windows.Forms.OpenFileDialog();
             this.sfd = new System.Windows.Forms.SaveFileDialog();
-            this.tsmiSaveAsLogFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.noti = new System.Windows.Forms.NotifyIcon(this.components);
+            this.notiContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.종료ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.notiContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -65,6 +75,49 @@
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // 파일ToolStripMenuItem
+            // 
+            this.파일ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiOpenLogFile,
+            this.tsmiSaveLogFile,
+            this.tsmiSaveAsLogFile});
+            this.파일ToolStripMenuItem.Name = "파일ToolStripMenuItem";
+            this.파일ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.파일ToolStripMenuItem.Text = "파일";
+            // 
+            // tsmiOpenLogFile
+            // 
+            this.tsmiOpenLogFile.Name = "tsmiOpenLogFile";
+            this.tsmiOpenLogFile.Size = new System.Drawing.Size(180, 22);
+            this.tsmiOpenLogFile.Text = "열기(&O)";
+            this.tsmiOpenLogFile.Click += new System.EventHandler(this.tsmiOpenLogFile_Click);
+            // 
+            // tsmiSaveLogFile
+            // 
+            this.tsmiSaveLogFile.Name = "tsmiSaveLogFile";
+            this.tsmiSaveLogFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.tsmiSaveLogFile.ShowShortcutKeys = false;
+            this.tsmiSaveLogFile.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSaveLogFile.Text = "저장(&S)";
+            this.tsmiSaveLogFile.Click += new System.EventHandler(this.tsmiSaveLogFile_Click);
+            // 
+            // tsmiSaveAsLogFile
+            // 
+            this.tsmiSaveAsLogFile.Name = "tsmiSaveAsLogFile";
+            this.tsmiSaveAsLogFile.Size = new System.Drawing.Size(180, 22);
+            this.tsmiSaveAsLogFile.Text = "다른 이름으로 저장";
+            this.tsmiSaveAsLogFile.Click += new System.EventHandler(this.tsmiSaveAsLogFile_Click);
+            // 
+            // 시작ToolStripMenuItem
+            // 
+            this.시작ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiStop,
+            this.tsmiRestart,
+            this.tsmiSave});
+            this.시작ToolStripMenuItem.Name = "시작ToolStripMenuItem";
+            this.시작ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.시작ToolStripMenuItem.Text = "설정";
+            // 
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
@@ -73,9 +126,22 @@
             // tsmiStop
             // 
             this.tsmiStop.Name = "tsmiStop";
-            this.tsmiStop.Size = new System.Drawing.Size(178, 22);
+            this.tsmiStop.Size = new System.Drawing.Size(122, 22);
             this.tsmiStop.Text = "중지";
             this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
+            // 
+            // tsmiRestart
+            // 
+            this.tsmiRestart.Name = "tsmiRestart";
+            this.tsmiRestart.Size = new System.Drawing.Size(122, 22);
+            this.tsmiRestart.Text = "재시작";
+            this.tsmiRestart.Click += new System.EventHandler(this.tsmiRestart_Click);
+            // 
+            // tsmiSave
+            // 
+            this.tsmiSave.Name = "tsmiSave";
+            this.tsmiSave.Size = new System.Drawing.Size(122, 22);
+            this.tsmiSave.Text = "불러오기";
             // 
             // 통계ToolStripMenuItem
             // 
@@ -148,42 +214,45 @@
             this.dataGridView1.Size = new System.Drawing.Size(855, 520);
             this.dataGridView1.TabIndex = 1;
             // 
-            // 파일ToolStripMenuItem
-            // 
-            this.파일ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiOpenLogFile,
-            this.tsmiSaveLogFile,
-            this.tsmiSaveAsLogFile});
-            this.파일ToolStripMenuItem.Name = "파일ToolStripMenuItem";
-            this.파일ToolStripMenuItem.Size = new System.Drawing.Size(53, 24);
-            this.파일ToolStripMenuItem.Text = "파일";
-            // 
-            // tsmiOpenLogFile
-            // 
-            this.tsmiOpenLogFile.Name = "tsmiOpenLogFile";
-            this.tsmiOpenLogFile.Size = new System.Drawing.Size(224, 26);
-            this.tsmiOpenLogFile.Text = "열기(&O)";
-            this.tsmiOpenLogFile.Click += new System.EventHandler(this.tsmiOpenLogFile_Click);
-            // 
-            // tsmiSaveLogFile
-            // 
-            this.tsmiSaveLogFile.Name = "tsmiSaveLogFile";
-            this.tsmiSaveLogFile.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.tsmiSaveLogFile.ShowShortcutKeys = false;
-            this.tsmiSaveLogFile.Size = new System.Drawing.Size(224, 26);
-            this.tsmiSaveLogFile.Text = "저장(&S)";
-            this.tsmiSaveLogFile.Click += new System.EventHandler(this.tsmiSaveLogFile_Click);
-            // 
             // ofd
             // 
             this.ofd.FileName = "openFileDialog1";
             // 
-            // tsmiSaveAsLogFile
+            // noti
             // 
-            this.tsmiSaveAsLogFile.Name = "tsmiSaveAsLogFile";
-            this.tsmiSaveAsLogFile.Size = new System.Drawing.Size(224, 26);
-            this.tsmiSaveAsLogFile.Text = "다른 이름으로 저장";
-            this.tsmiSaveAsLogFile.Click += new System.EventHandler(this.tsmiSaveAsLogFile_Click);
+            this.noti.ContextMenuStrip = this.notiContextMenu;
+            this.noti.Icon = ((System.Drawing.Icon)(resources.GetObject("noti.Icon")));
+            this.noti.Text = "PCTORY";
+            this.noti.Visible = true;
+            this.noti.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.noti_MouseDoubleClick);
+            // 
+            // notiContextMenu
+            // 
+            this.notiContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.열기ToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.종료ToolStripMenuItem});
+            this.notiContextMenu.Name = "notiContextMenu";
+            this.notiContextMenu.Size = new System.Drawing.Size(99, 54);
+            // 
+            // 열기ToolStripMenuItem
+            // 
+            this.열기ToolStripMenuItem.Name = "열기ToolStripMenuItem";
+            this.열기ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.열기ToolStripMenuItem.Text = "열기";
+            this.열기ToolStripMenuItem.Click += new System.EventHandler(this.열기ToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(95, 6);
+            // 
+            // 종료ToolStripMenuItem
+            // 
+            this.종료ToolStripMenuItem.Name = "종료ToolStripMenuItem";
+            this.종료ToolStripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.종료ToolStripMenuItem.Text = "종료";
+            this.종료ToolStripMenuItem.Click += new System.EventHandler(this.종료ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -201,6 +270,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.notiContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -226,6 +296,12 @@
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.SaveFileDialog sfd;
         private System.Windows.Forms.ToolStripMenuItem tsmiSaveAsLogFile;
-
+        private System.Windows.Forms.ToolStripMenuItem tsmiSave;
+        private System.Windows.Forms.ToolStripMenuItem tsmiRestart;
+        private System.Windows.Forms.NotifyIcon noti;
+        private System.Windows.Forms.ContextMenuStrip notiContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem 종료ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 열기ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }

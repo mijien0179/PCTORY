@@ -16,6 +16,10 @@ namespace pctory
 {
     public partial class Form1 : pctoryForm
     {
+        string[] args;
+
+        bool closer = false;
+
         Tracer tracer = null;
         Thread thread;
 
@@ -83,7 +87,7 @@ namespace pctory
             
             dataGridView1.Rows.AddRange(data.ToArray());
         }
-        public Form1()
+        public Form1(string[] args)
         {
             InitializeComponent();
             InitializeFileDialog();
@@ -91,6 +95,7 @@ namespace pctory
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
 
+            this.args = args;
 
             DataGridView dv = this.dataGridView1;
             dv.ReadOnly = true;
@@ -132,12 +137,12 @@ namespace pctory
       
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            Hide();
+            if(!closer) e.Cancel = true;
+
             running = false;
-
             tracer.StopTrace();
-
             thread.Join();
-            
         }
 
         private void tsmiStop_Click(object sender, EventArgs e)
@@ -162,6 +167,16 @@ namespace pctory
             thread = new Thread(textUpdate);
             thread.Start();
 
+            if (args.Contains("--autorun"))
+            {
+                Visible = false;
+                ShowInTaskbar = false;
+
+                args = (from d in args
+                       where d != "--autorun"
+                       select d).ToArray();
+            }
+            
         }
         
         private void InitializeFileDialog()
@@ -203,6 +218,41 @@ namespace pctory
                 ofd.FileName = sfd.FileName;
                 tsmiSaveLogFile_Click(tsmiSaveLogFile, EventArgs.Empty);
             }
+        }
+
+        private void tsmiRestart_Click(object sender, EventArgs e)
+        {
+            if(running == true)
+                MessageBox.Show("프로그램이 실행 중 입니다.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
+            {
+                running = true;
+                tracer.RunTrace();
+                thread = new Thread(textUpdate);
+                thread.Start();
+            }
+
+        }
+
+        private void 종료ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            closer = true;
+            Close();
+        }
+
+        private void noti_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            OpenForm();
+        }
+
+        private void OpenForm()
+        {
+            Show();
+        }
+
+        private void 열기ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenForm();
         }
     }
 }
