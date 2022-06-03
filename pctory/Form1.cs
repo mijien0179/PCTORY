@@ -254,5 +254,18 @@ namespace pctory
         {
             OpenForm();
         }
+
+
+        
+      
+
+        private void 통계ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Graph grep = new Graph(tracer.ProcInfoList, sender.ToString());
+            grep.Owner = this;
+            grep.ShowDialog();
+
+        }
+
     }
 }
