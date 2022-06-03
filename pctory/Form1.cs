@@ -167,6 +167,9 @@ namespace pctory
             thread = new Thread(textUpdate);
             thread.Start();
 
+            Visible = false;
+            ShowInTaskbar = false;
+            
         }
         
         private void InitializeFileDialog()
@@ -207,6 +210,36 @@ namespace pctory
             {
                 ofd.FileName = sfd.FileName;
                 tsmiSaveLogFile_Click(tsmiSaveLogFile, EventArgs.Empty);
+            }
+        }
+
+        private void tsmiRestart_Click(object sender, EventArgs e)
+        {
+            if(running == true)
+                MessageBox.Show("프로그램이 실행 중 입니다.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
+            {
+                running = true;
+                tracer.RunTrace();
+                thread = new Thread(textUpdate);
+                thread.Start();
+            }
+
+        }
+
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            Visible = true;
+            ShowInTaskbar = true;
+            WindowState = FormWindowState.Normal;
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                Visible = false;
+                ShowInTaskbar = false;
             }
         }
     }
