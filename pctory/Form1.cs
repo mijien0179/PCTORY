@@ -155,20 +155,8 @@ namespace pctory
             fSetting fsetting = new fSetting();
             fsetting.Owner = this;
             fsetting.ShowDialog();
-
-        private void 시작프로그램등록ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //ApiHelper.AddStartProgram("pctory", Application.ExecutablePath);
-            Setting.SetStartup();
         }
-
-        private void 시작프로그램해제ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //ApiHelper.RemoveStartProgram("pctory");
-            Setting.ResetStartup();
-
-        }
-
+        
         private void Form1_Load(object sender, EventArgs e)
         {
             running = true;
