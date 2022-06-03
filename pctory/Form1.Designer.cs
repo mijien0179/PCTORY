@@ -31,8 +31,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.시작ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.시작프로그램등록ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.시작프로그램해제ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.통계ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.주간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.월간그래프ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,17 +65,6 @@
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // 시작ToolStripMenuItem
-            // 
-            this.시작ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiStop,
-            this.tsmiSave,
-            this.시작프로그램등록ToolStripMenuItem,
-            this.시작프로그램해제ToolStripMenuItem});
-            this.시작ToolStripMenuItem.Name = "시작ToolStripMenuItem";
-            this.시작ToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
-            this.시작ToolStripMenuItem.Text = "설정";
-            // 
             // tsmiSave
             // 
             this.tsmiSave.Name = "tsmiSave";
@@ -89,20 +76,6 @@
             this.tsmiStop.Size = new System.Drawing.Size(178, 22);
             this.tsmiStop.Text = "중지";
             this.tsmiStop.Click += new System.EventHandler(this.tsmiStop_Click);
-            // 
-            // 시작프로그램등록ToolStripMenuItem
-            // 
-            this.시작프로그램등록ToolStripMenuItem.Name = "시작프로그램등록ToolStripMenuItem";
-            this.시작프로그램등록ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.시작프로그램등록ToolStripMenuItem.Text = "시작 프로그램 등록";
-            this.시작프로그램등록ToolStripMenuItem.Click += new System.EventHandler(this.시작프로그램등록ToolStripMenuItem_Click);
-            // 
-            // 시작프로그램해제ToolStripMenuItem
-            // 
-            this.시작프로그램해제ToolStripMenuItem.Name = "시작프로그램해제ToolStripMenuItem";
-            this.시작프로그램해제ToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
-            this.시작프로그램해제ToolStripMenuItem.Text = "시작 프로그램 해제";
-            this.시작프로그램해제ToolStripMenuItem.Click += new System.EventHandler(this.시작프로그램해제ToolStripMenuItem_Click);
             // 
             // 통계ToolStripMenuItem
             // 
@@ -247,16 +220,12 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiSave;
         private System.Windows.Forms.ToolStripMenuItem tsmiStop;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem tsmiStop;
         private System.Windows.Forms.ToolStripMenuItem 파일ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiOpenLogFile;
         private System.Windows.Forms.ToolStripMenuItem tsmiSaveLogFile;
         private System.Windows.Forms.OpenFileDialog ofd;
         private System.Windows.Forms.SaveFileDialog sfd;
         private System.Windows.Forms.ToolStripMenuItem tsmiSaveAsLogFile;
-        private System.Windows.Forms.ToolStripMenuItem tsmiSave;
-        private System.Windows.Forms.ToolStripMenuItem 시작프로그램등록ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 시작프로그램해제ToolStripMenuItem;
 
     }
 }
