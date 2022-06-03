@@ -29,7 +29,7 @@ namespace pctory
             chart1.Titles[0].Text = title + " 사용 횟수";
             chart2.Titles[0].Text = title + " 사용 횟수";
             chart3.Titles[0].Text = title + " 사용 시간";
-            chart4.Titles[0].Text = title + " 사용 시간";
+            chart3.Titles[0].Text = title + " 사용 시간";
         }
         private void loadData() {
             chart1.Series[0].Points.Clear();
@@ -43,27 +43,16 @@ namespace pctory
                 {
                     cnt += i.CaptionCount();
                 }
+                double Htime =t.Value.Hours;
+                double Mtime =t.Value.Minutes;
+                double Stime =t.Value.TotalSeconds;
                 chart1.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt); 
                 chart2.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
-                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.TotalSeconds : 0);
-                chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.TotalSeconds : 0);
+                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.Seconds : 0);
+                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.Seconds : 0);
             }
-        }  
-       
-
-        private void chart1_Click(object sender, EventArgs e)
-        {
-
         }
 
-        private void chart4_Click(object sender, EventArgs e)
-        {
-            
-        }
 
-        private void Graph_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

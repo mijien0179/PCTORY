@@ -91,21 +91,21 @@
             this.일간그래프ToolStripMenuItem.Name = "일간그래프ToolStripMenuItem";
             this.일간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.일간그래프ToolStripMenuItem.Text = "일간그래프";
-            this.일간그래프ToolStripMenuItem.Click += new System.EventHandler(this.일간그래프ToolStripMenuItem_Click);
+            this.일간그래프ToolStripMenuItem.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // 주간그래프ToolStripMenuItem
             // 
             this.주간그래프ToolStripMenuItem.Name = "주간그래프ToolStripMenuItem";
             this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.주간그래프ToolStripMenuItem.Text = "주간그래프";
-            this.주간그래프ToolStripMenuItem.Click += new System.EventHandler(this.주간그래프ToolStripMenuItem_Click);
+            this.주간그래프ToolStripMenuItem.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // 월간그래프ToolStripMenuItem
             // 
             this.월간그래프ToolStripMenuItem.Name = "월간그래프ToolStripMenuItem";
             this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.월간그래프ToolStripMenuItem.Text = "월간그래프";
-            this.월간그래프ToolStripMenuItem.Click += new System.EventHandler(this.월간그래프ToolStripMenuItem_Click);
+            this.월간그래프ToolStripMenuItem.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // dataGridView1
             // 
