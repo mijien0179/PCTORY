@@ -100,6 +100,33 @@ namespace pctory
             Process.Start("cmd", $"/c schtasks -delete /tn \"\\pctory\" /f");
         }
 
+        public void FileConnectProgram()
+        { 
+            string path = @"C:\Users\김수연\source\repos\mijien0179\PCTORY\pctory\bin\Debug\pctory.exe";
+            object ob = 
+            using (RegistryKey ckey = Registry.CurrentUser.OpenSubKey(@"Software\Classes", true))
+            {
+                using(RegistryKey fkey = ckey.CreateSubKey(".pctory"))
+                {
+                    fkey.SetValue(null,filetype)
+                }
+                using(RegistryKey ftkey = ckey.CreateSubKey(fileType))
+                {
+                    ftkey.SetValue(null, fileDescription);
+                    using(RegistryKey skey = ftkey.CreateSubKey("shell"))
+                    {
+                        using(RegistryKey okey = skey.CreateSubKey("open"))
+                        {
+                            using(RegistryKey comkey = skey.CreateSubKey("command"))
+                            {
+                                string command = string.Format("\"{0}\"\"%1\"", path);
+                                comkey.SetValue(null, command);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
