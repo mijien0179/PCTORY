@@ -34,6 +34,8 @@ namespace pctory
         private void loadData() {
             chart1.Series[0].Points.Clear();
             chart2.Series[0].Points.Clear();
+            chart3.Series[0].Points.Clear();
+            chart4.Series[0].Points.Clear();
             foreach (var key in info.GetKeys())
             {
                 var item = info.GetData(key);
@@ -43,13 +45,19 @@ namespace pctory
                 {
                     cnt += i.CaptionCount();
                 }
-                double Htime =t.Value.Hours;
-                double Mtime =t.Value.Minutes;
-                double Stime =t.Value.TotalSeconds;
+                if (t != null)
+                { 
+                    double Htime =t.Value.Hours;
+                    double Mtime =t.Value.Minutes;
+                    double Stime =t.Value.TotalSeconds;
+                    chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.Seconds : 0);
+                    chart4.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.Seconds : 0);
+                
+                }
                 chart1.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt); 
                 chart2.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),cnt);
-                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.Seconds : 0);
-                chart3.Series[0].Points.AddXY(System.IO.Path.GetFileName(key),t.HasValue ? t.Value.Seconds : 0);
+              
+                
             }
         }
 
