@@ -143,18 +143,21 @@
             this.주간그래프ToolStripMenuItem.Name = "주간그래프ToolStripMenuItem";
             this.주간그래프ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.주간그래프ToolStripMenuItem.Text = "일간그래프";
+            this.주간그래프ToolStripMenuItem.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // 월간그래프ToolStripMenuItem
             // 
             this.월간그래프ToolStripMenuItem.Name = "월간그래프ToolStripMenuItem";
             this.월간그래프ToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.월간그래프ToolStripMenuItem.Text = "주간그래프";
+            this.월간그래프ToolStripMenuItem.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // 월간그래프ToolStripMenuItem1
             // 
             this.월간그래프ToolStripMenuItem1.Name = "월간그래프ToolStripMenuItem1";
             this.월간그래프ToolStripMenuItem1.Size = new System.Drawing.Size(224, 26);
             this.월간그래프ToolStripMenuItem1.Text = "월간그래프";
+            this.월간그래프ToolStripMenuItem1.Click += new System.EventHandler(this.통계ToolStripMenuItem_Click);
             // 
             // 도구TToolStripMenuItem
             // 
