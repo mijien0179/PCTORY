@@ -94,6 +94,12 @@
     <Compile Include="fSetting.designer.cs">
       <DependentUpon>fSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="fViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fViewer.Designer.cs">
+      <DependentUpon>fViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Graph.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -110,12 +116,16 @@
     <Compile Include="Setting.cs" />
     <Compile Include="Tracer.cs" />
     <Compile Include="ApiHelper.cs" />
+    <Compile Include="viewInitializer.cs" />
     <Compile Include="WinApi.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fSetting.resx">
       <DependentUpon>fSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fViewer.resx">
+      <DependentUpon>fViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Graph.resx">
       <DependentUpon>Graph.cs</DependentUpon>
