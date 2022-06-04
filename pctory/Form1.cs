@@ -262,20 +262,34 @@ namespace pctory
 
         private void 통계ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-         
-
             Graph grep = new Graph(ReadData(sender.ToString()), sender.ToString());
             grep.Owner = this;
             grep.ShowDialog();
-
+            
         }
         public ProcessInfoList ReadData(String time) {
+            DateTime day= DateTime.Now;
             ProcessInfoList data = tracer.ProcInfoList;
-            if (time == "월간 그래프")
+            String path = "";
+            if (time == "월간그래프")
             {
+                for (int i = 0; i < 30; i++)
+                {
+                    day = DateTime.Now.AddDays(-i);
+                    path = Setting.LogSaveLoc + "\\" + day.Year.ToString() + "-" + day.Month.ToString() + "-" + day.Day.ToString() + ".pctory";
+                    FileInfo datafile = new FileInfo(path);
+                    if (datafile.Exists) {
+                       ProcessInfoList newdata = FileIO.FileInput(path);
+                       ApiHelper.CombineProcessInfoList(data, newdata);
+                    
+                    }
+                    
+                }
+
+
                 return data;
             }
-            else if (time == "주간 그래프 ")
+            else if (time == "주간그래프")
             {
                 return data;
             }

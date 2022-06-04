@@ -35,6 +35,7 @@ namespace pctory
         }
         private  SortedList< double, string> data =new SortedList< double,string>();
         private  SortedList< string,double> data_frequency =new SortedList< string,double>();
+
         private void loadData() {
             chart1.Series[0].Points.Clear();
             chart2.Series[0].Points.Clear();

@@ -52,9 +52,9 @@ namespace pctory
             this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.timelabel = new System.Windows.Forms.Label();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.timelabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -179,6 +179,15 @@ namespace pctory
             this.splitContainer2.SplitterDistance = 394;
             this.splitContainer2.TabIndex = 0;
             // 
+            // timelabel
+            // 
+            this.timelabel.AutoSize = true;
+            this.timelabel.Location = new System.Drawing.Point(325, 75);
+            this.timelabel.Name = "timelabel";
+            this.timelabel.Size = new System.Drawing.Size(38, 12);
+            this.timelabel.TabIndex = 4;
+            this.timelabel.Text = "label1";
+            // 
             // chart3
             // 
             chartArea3.Name = "ChartArea1";
@@ -218,15 +227,6 @@ namespace pctory
             title4.Name = "Title1";
             this.chart4.Titles.Add(title4);
             // 
-            // timelabel
-            // 
-            this.timelabel.AutoSize = true;
-            this.timelabel.Location = new System.Drawing.Point(325, 75);
-            this.timelabel.Name = "timelabel";
-            this.timelabel.Size = new System.Drawing.Size(38, 12);
-            this.timelabel.TabIndex = 4;
-            this.timelabel.Text = "label1";
-            // 
             // Graph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -235,7 +235,7 @@ namespace pctory
             this.ClientSize = new System.Drawing.Size(845, 675);
             this.Controls.Add(this.tabControl1);
             this.Name = "Graph";
-            this.Text = " ";
+            this.Text = " Chart";
             this.TitleFontFamily = new System.Drawing.Font("맑은 고딕", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
