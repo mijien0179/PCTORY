@@ -379,7 +379,6 @@ namespace pctory.design
         }
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
             e.Graphics.Clear(BackColor);
             using (LinearGradientBrush brush = new LinearGradientBrush(new Point(0, 2), new Point(Width, 2), TitleBarColor[0], TitleBarColor[1]))
                 e.Graphics.FillRectangle(brush, new Rectangle(0, 0, Width, 5));
@@ -421,6 +420,7 @@ namespace pctory.design
 
 
 
+            base.OnPaint(e);
 
         }
 
