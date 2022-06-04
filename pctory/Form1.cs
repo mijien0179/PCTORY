@@ -273,7 +273,6 @@ namespace pctory
             String path = "";
             if (time == "월간그래프")
             {
-                MessageBox.Show(Setting.LogSaveLoc);
                 for (int i = 0; i < 30; i++)
                 {
                     day = DateTime.Now.AddDays(-i);
@@ -296,7 +295,6 @@ namespace pctory
             }
             else if (time == "주간그래프")
             {
-                MessageBox.Show(Setting.LogSaveLoc);
                 for (int i = 0; i < 7; i++)
                 {
                     day = DateTime.Now.AddDays(-i);
