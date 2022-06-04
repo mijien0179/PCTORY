@@ -54,6 +54,7 @@ namespace pctory
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.chart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chart4 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.timelabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -168,6 +169,7 @@ namespace pctory
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.timelabel);
             this.splitContainer2.Panel1.Controls.Add(this.chart3);
             // 
             // splitContainer2.Panel2
@@ -216,6 +218,15 @@ namespace pctory
             title4.Name = "Title1";
             this.chart4.Titles.Add(title4);
             // 
+            // timelabel
+            // 
+            this.timelabel.AutoSize = true;
+            this.timelabel.Location = new System.Drawing.Point(325, 75);
+            this.timelabel.Name = "timelabel";
+            this.timelabel.Size = new System.Drawing.Size(38, 12);
+            this.timelabel.TabIndex = 4;
+            this.timelabel.Text = "label1";
+            // 
             // Graph
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -236,6 +247,7 @@ namespace pctory
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
@@ -255,5 +267,6 @@ namespace pctory
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart3;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart4;
+        private System.Windows.Forms.Label timelabel;
     }
 }

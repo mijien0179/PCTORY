@@ -262,6 +262,10 @@ namespace pctory
 
         private void 통계ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (sender.ToString() == "주간그래프") {
+                //procInfoList합쳐서 넘겨줄것. data 읽고.
+            
+            }
             Graph grep = new Graph(tracer.ProcInfoList, sender.ToString());
             grep.Owner = this;
             grep.ShowDialog();
