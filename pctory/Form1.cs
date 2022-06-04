@@ -91,7 +91,8 @@ namespace pctory
         {
             InitializeComponent();
             InitializeFileDialog();
-
+            Setting.FileConnectProgram();
+            Setting.DeleteRegistry();
             //tracer.RunTrace();
             tracer = new Tracer(true).RunTrace();
 
