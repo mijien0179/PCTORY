@@ -15,6 +15,13 @@ namespace pctory
     public partial class Graph : pctoryForm
     {
         ProcessInfoList info;
+
+        /// <summary>
+        /// ProcessInfoList와 Title을 기준으로 해당 데이터를 읽어들여 통계자료로 보여주는 함수
+        /// </summary>
+        /// <param name="info">읽어들일 PCB </param>
+        /// <param name="title">창의 제목 </param>
+        /// <returns>통계 자료 창</returns>
         public Graph(ProcessInfoList info,string title)
         {
             InitializeComponent();
