@@ -273,24 +273,52 @@ namespace pctory
             String path = "";
             if (time == "월간그래프")
             {
+                MessageBox.Show(Setting.LogSaveLoc);
                 for (int i = 0; i < 30; i++)
                 {
                     day = DateTime.Now.AddDays(-i);
-                    path = Setting.LogSaveLoc + "\\" + day.Year.ToString() + "-" + day.Month.ToString() + "-" + day.Day.ToString() + ".pctory";
+                    path = Setting.LogSaveLoc + "\\" + day.Year.ToString();
+                    if (day.Month <= 9)
+                    { 
+                        path +="-0" + day.Month.ToString();
+                    }else path += "-" + day.Month.ToString();
+                    if (day.Day <= 9) { 
+                        path +="-0" + day.Day.ToString() +".pctory";
+                    }else path += "-" + day.Day.ToString() + ".pctory";
+                    
                     FileInfo datafile = new FileInfo(path);
                     if (datafile.Exists) {
                        ProcessInfoList newdata = FileIO.FileInput(path);
-                       ApiHelper.CombineProcessInfoList(data, newdata);
-                    
+                       data= ApiHelper.CombineProcessInfoList(data, newdata);
                     }
-                    
                 }
-
-
                 return data;
             }
             else if (time == "주간그래프")
             {
+                MessageBox.Show(Setting.LogSaveLoc);
+                for (int i = 0; i < 7; i++)
+                {
+                    day = DateTime.Now.AddDays(-i);
+                    path = Setting.LogSaveLoc + "\\" + day.Year.ToString();
+                    if (day.Month <= 9)
+                    {
+                        path += "-0" + day.Month.ToString();
+                    }
+                    else path += "-" + day.Month.ToString();
+                    if (day.Day <= 9)
+                    {
+                        path += "-0" + day.Day.ToString() + ".pctory";
+                    }
+                    else path += "-" + day.Day.ToString() + ".pctory";
+
+                    FileInfo datafile = new FileInfo(path);
+                    if (datafile.Exists)
+                    {
+                        ProcessInfoList newdata = FileIO.FileInput(path);
+                        data = ApiHelper.CombineProcessInfoList(data, newdata);
+                    }
+                }
                 return data;
             }
             else
