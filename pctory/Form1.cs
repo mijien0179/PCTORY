@@ -278,7 +278,7 @@ namespace pctory
             {
                 inform = FileIO.FileInput(path);
             }
-
+            tracer.LogBackgroundTime2LastPCB();
             FileIO.FileOutput(ApiHelper.CombineProcessInfoList(inform, tracer.ProcInfoList), path);
         }
 
@@ -292,7 +292,7 @@ namespace pctory
             ProcessInfoList inform = new ProcessInfoList();
 
             if (File.Exists(path)) inform = FileIO.FileInput(path);
-
+            tracer.LogBackgroundTime2LastPCB();
             FileIO.FileOutput(ApiHelper.CombineProcessInfoList(inform, tracer.ProcInfoList), path);
         }
 
@@ -308,6 +308,13 @@ namespace pctory
             Graph graph = new Graph(tracer.ProcInfoList, "현재 통계");
             graph.Owner = this;
             graph.ShowDialog();
+        }
+
+        private void Form1_Activated(object sender, EventArgs e)
+        {
+            tracer.LogBackgroundTime2LastPCB();
+
+
         }
     }
 }
