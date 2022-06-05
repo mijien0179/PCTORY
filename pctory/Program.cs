@@ -62,7 +62,16 @@ namespace pctory
                 return;
             }
 
-            Application.Run(new Form1(args));
+            Form frm = new Form1();
+            if(args.Length > 0 && args[0] == "--autorun")
+            {
+                Application.Run();
+            }
+            else
+            {
+                Application.Run(frm);
+            }
+
             mutex.Close();
 
         }

@@ -18,24 +18,10 @@ namespace pctory
 {
     public partial class Form1 : pctoryForm
     {
-        string[] args;
-
         bool closer = false;
 
         Tracer tracer = null;
-        Thread thread;
         DayTrace daytrace=null;
-        private bool running = false;
-
-        private void textUpdate()
-        {
-
-            while (running)
-            {
-                InvalidateText();
-                Thread.Sleep(3000);
-            }
-        }
 
         private void InvalidateText()
         {
@@ -48,8 +34,14 @@ namespace pctory
 
             dataGridView1.Rows.Clear();
             dataGridView1.Rows.AddRange(viewInitializer.ProcInfoList2DVGRows(tracer.ProcInfoList));
+
+            Application.ApplicationExit += (sender, e) =>
+            {
+                closer = true;
+                tracer.StopTrace();
+            };
         }
-        public Form1(string[] args)
+        public Form1()
         {
             InitializeComponent();
             InitializeFileDialog();
@@ -57,7 +49,6 @@ namespace pctory
 
             Tag = TitleBarColor;
 
-            this.args = args;
 
             tracer = new Tracer(true);
 
@@ -70,12 +61,10 @@ namespace pctory
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Hide();
             if (!closer) e.Cancel = true;
             else FileAutoOutput_Closing(sender, e);
 
-            running = false;
-            thread.Abort();
+            Hide();
         }
 
         private void tsmiTracerRun_Click(object sender, EventArgs e)
@@ -84,7 +73,6 @@ namespace pctory
             {
                 tsmiTracerRun.Text = "트레이서 재동작";
 
-                running = false;
                 tracer.StopTrace();
 
 
@@ -107,10 +95,6 @@ namespace pctory
 
                 tracer.RunTrace();
 
-                running = true;
-                thread = new Thread(textUpdate);
-                thread.Start();
-
                 TitleBarColor = (Color[])Tag;
 
 
@@ -128,19 +112,6 @@ namespace pctory
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            running = true;
-            thread = new Thread(textUpdate);
-            thread.Start();
-
-            if (args.Contains("--autorun"))
-            {
-                Visible = false;
-
-                args = (from d in args
-                        where d != "--autorun"
-                        select d).ToArray();
-            }
-
         }
 
         private void InitializeFileDialog()
@@ -177,7 +148,7 @@ namespace pctory
             tracer.StopTrace();
             daytrace.Stop();
 
-            Close();
+            Application.Exit();
         }
 
         private void noti_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -188,9 +159,6 @@ namespace pctory
         private void OpenForm()
         {
             Show();
-            running = true;
-            thread = new Thread(textUpdate);
-            thread.Start();
         }
 
         private void 열기ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -313,7 +281,7 @@ namespace pctory
         private void Form1_Activated(object sender, EventArgs e)
         {
             tracer.LogBackgroundTime2LastPCB();
-
+            InvalidateText();
 
         }
     }

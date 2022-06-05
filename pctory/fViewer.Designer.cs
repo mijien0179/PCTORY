@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("노드0");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("노드1");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("노드2");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("노드3");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("노드4");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("노드5");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("노드6");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("노드0");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("노드1");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("노드2");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("노드3");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("노드4");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("노드5");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("노드6");
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblstatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -106,9 +106,14 @@
             // 
             // lblstatus
             // 
+            this.lblstatus.AutoToolTip = true;
+            this.lblstatus.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.lblstatus.Name = "lblstatus";
-            this.lblstatus.Size = new System.Drawing.Size(191, 17);
+            this.lblstatus.Size = new System.Drawing.Size(912, 17);
+            this.lblstatus.Spring = true;
             this.lblstatus.Text = "                                              ";
+            this.lblstatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblstatus.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
             // 
             // menuStrip1
             // 
@@ -136,26 +141,26 @@
             // 열기OToolStripMenuItem
             // 
             this.열기OToolStripMenuItem.Name = "열기OToolStripMenuItem";
-            this.열기OToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.열기OToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.열기OToolStripMenuItem.Text = "추가(&A)";
             this.열기OToolStripMenuItem.Click += new System.EventHandler(this.열기OToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(163, 6);
             // 
             // 체크된항목삭제ToolStripMenuItem
             // 
             this.체크된항목삭제ToolStripMenuItem.Name = "체크된항목삭제ToolStripMenuItem";
-            this.체크된항목삭제ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.체크된항목삭제ToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.체크된항목삭제ToolStripMenuItem.Text = "체크된 항목 삭제";
             this.체크된항목삭제ToolStripMenuItem.Click += new System.EventHandler(this.체크한항목삭제ToolStripMenuItem_Click);
             // 
             // 선택된항목삭제ToolStripMenuItem1
             // 
             this.선택된항목삭제ToolStripMenuItem1.Name = "선택된항목삭제ToolStripMenuItem1";
-            this.선택된항목삭제ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.선택된항목삭제ToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
             this.선택된항목삭제ToolStripMenuItem1.Text = "선택된 항목 삭제";
             this.선택된항목삭제ToolStripMenuItem1.Click += new System.EventHandler(this.선택된항목삭제ToolStripMenuItem_Click);
             // 
@@ -263,28 +268,28 @@
             this.trvFile.Dock = System.Windows.Forms.DockStyle.Fill;
             this.trvFile.Location = new System.Drawing.Point(0, 0);
             this.trvFile.Name = "trvFile";
-            treeNode1.Name = "노드0";
-            treeNode1.Text = "노드0";
-            treeNode2.Name = "노드1";
-            treeNode2.Text = "노드1";
-            treeNode3.Name = "노드2";
-            treeNode3.Text = "노드2";
-            treeNode4.Name = "노드3";
-            treeNode4.Text = "노드3";
-            treeNode5.Name = "노드4";
-            treeNode5.Text = "노드4";
-            treeNode6.Name = "노드5";
-            treeNode6.Text = "노드5";
-            treeNode7.Name = "노드6";
-            treeNode7.Text = "노드6";
+            treeNode8.Name = "노드0";
+            treeNode8.Text = "노드0";
+            treeNode9.Name = "노드1";
+            treeNode9.Text = "노드1";
+            treeNode10.Name = "노드2";
+            treeNode10.Text = "노드2";
+            treeNode11.Name = "노드3";
+            treeNode11.Text = "노드3";
+            treeNode12.Name = "노드4";
+            treeNode12.Text = "노드4";
+            treeNode13.Name = "노드5";
+            treeNode13.Text = "노드5";
+            treeNode14.Name = "노드6";
+            treeNode14.Text = "노드6";
             this.trvFile.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4,
-            treeNode5,
-            treeNode6,
-            treeNode7});
+            treeNode8,
+            treeNode9,
+            treeNode10,
+            treeNode11,
+            treeNode12,
+            treeNode13,
+            treeNode14});
             this.trvFile.Size = new System.Drawing.Size(192, 531);
             this.trvFile.TabIndex = 11;
             this.trvFile.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.trvFile_AfterSelect);
