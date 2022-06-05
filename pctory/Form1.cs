@@ -272,7 +272,14 @@ namespace pctory
             if (!Directory.Exists(Setting.LogSaveLoc))
                 Directory.CreateDirectory(Setting.LogSaveLoc);
 
-            FileIO.FileOutput(tracer.ProcInfoList, path);
+            ProcessInfoList inform = new ProcessInfoList();
+
+            if (File.Exists(path))
+            {
+                inform = FileIO.FileInput(path);
+            }
+
+            FileIO.FileOutput(ApiHelper.CombineProcessInfoList(inform, tracer.ProcInfoList), path);
         }
 
         public void FileAutoOutput_Closing(object sender, EventArgs e)
@@ -282,7 +289,11 @@ namespace pctory
             if (!Directory.Exists(Setting.LogSaveLoc))
                 Directory.CreateDirectory(Setting.LogSaveLoc);
 
-            FileIO.FileOutput(tracer.ProcInfoList, path);
+            ProcessInfoList inform = new ProcessInfoList();
+
+            if (File.Exists(path)) inform = FileIO.FileInput(path);
+
+            FileIO.FileOutput(ApiHelper.CombineProcessInfoList(inform, tracer.ProcInfoList), path);
         }
 
         private void 로그뷰어VToolStripMenuItem_Click(object sender, EventArgs e)
