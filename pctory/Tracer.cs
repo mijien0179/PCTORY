@@ -362,7 +362,7 @@ namespace pctory
             get => status;
             private set => status = value;
         }
-        private bool status;
+        private bool status = false;
 
         #endregion
 
