@@ -135,7 +135,6 @@ namespace pctory
             if (args.Contains("--autorun"))
             {
                 Visible = false;
-                ShowInTaskbar = false;
 
                 args = (from d in args
                         where d != "--autorun"
