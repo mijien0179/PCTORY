@@ -29,7 +29,7 @@ namespace pctory.design
             BackColor = Color.White;
             StartPosition = FormStartPosition.CenterScreen;
             TitleFontFamily = new Font("나눔고딕", 12);
-            Padding = new Padding(1, 40, 1, 1);
+            Padding = new Padding(4, 40, 4, 4);
 
         }
 
@@ -107,15 +107,16 @@ namespace pctory.design
             }
         }
 
-        private Rectangle BorderTop() => new Rectangle(4, 0, Width, 4);
-        private Rectangle BorderLeft() => new Rectangle(0, 4, 4, Height - 4);
-        private Rectangle BorderRight() => new Rectangle(Width - 4, 31, Width, Height - 4);
-        private Rectangle BorderBottom() => new Rectangle(4, Height - 4, Width - 4, Height - 4);
+        private const int THICKNESS = 4;
+        private Rectangle BorderTop() => new Rectangle(THICKNESS, 0, Width, THICKNESS);
+        private Rectangle BorderLeft() => new Rectangle(0, THICKNESS, THICKNESS, Height - THICKNESS);
+        private Rectangle BorderRight() => new Rectangle(Width - THICKNESS, 31, Width, Height - THICKNESS);
+        private Rectangle BorderBottom() => new Rectangle(THICKNESS, Height - THICKNESS, Width - THICKNESS, Height - THICKNESS);
 
-        private Rectangle BorderTopLeft() => new Rectangle(0, 0, 4, 4);
-        private Rectangle BorderTopRight() => new Rectangle(Width - 4, 0, Width, 4);
-        private Rectangle BorderBottomLeft() => new Rectangle(0, Height - 4, 4, Height);
-        private Rectangle BorderBottomRight() => new Rectangle(Width - 4, Height - 4, Width, Height);
+        private Rectangle BorderTopLeft() => new Rectangle(0, 0, THICKNESS, THICKNESS);
+        private Rectangle BorderTopRight() => new Rectangle(Width - THICKNESS, 0, Width, THICKNESS);
+        private Rectangle BorderBottomLeft() => new Rectangle(0, Height - THICKNESS, THICKNESS, Height);
+        private Rectangle BorderBottomRight() => new Rectangle(Width - THICKNESS, Height - THICKNESS, Width, Height);
 
         private Rectangle TitleButtonRectangle(ControlTypes type)
         {
@@ -378,7 +379,6 @@ namespace pctory.design
         }
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
             e.Graphics.Clear(BackColor);
             using (LinearGradientBrush brush = new LinearGradientBrush(new Point(0, 2), new Point(Width, 2), TitleBarColor[0], TitleBarColor[1]))
                 e.Graphics.FillRectangle(brush, new Rectangle(0, 0, Width, 5));
@@ -420,6 +420,7 @@ namespace pctory.design
 
 
 
+            base.OnPaint(e);
 
         }
 

@@ -11,10 +11,37 @@ namespace pctory
 {
     internal static class viewInitializer
     {
-        public static void ProcInfoListDVGHeaderInitializer(ref DataGridView dv)
+        private static void DefaultDVGInitializer(DataGridView dv)
         {
+            if (dv.InvokeRequired)
+            {
+                dv.Invoke(new MethodInvoker(() => DefaultDVGInitializer(dv)));
+                return;
+            }
             dv.Rows.Clear();
             dv.Columns.Clear();
+
+            dv.AllowUserToDeleteRows = false;
+            dv.AllowUserToAddRows = false;
+            dv.AllowUserToResizeRows = false;
+            dv.BorderStyle= BorderStyle.None;
+            dv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+
+//            dv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dv.RowHeadersVisible = false;
+
+
+            dv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        public static void ProcInfoListDVGHeaderInitializer(DataGridView dv)
+        {
+            if (dv.InvokeRequired)
+            {
+                dv.Invoke(new MethodInvoker(() => ProcInfoListDVGHeaderInitializer(dv)));
+                return;
+            }
+            DefaultDVGInitializer(dv);
 
             dv.Columns.AddRange(new DataGridViewColumn[]{
                 new DataGridViewTextBoxColumn()
@@ -57,7 +84,7 @@ namespace pctory
 
         }
 
-        public static void InputDataProcInfoListDVG(ref DataGridView dv, in ProcessInfoList inform)
+        public static DataGridViewRow[] ProcInfoList2DVGRows(in ProcessInfoList inform)
         {
             var rows = new List<DataGridViewRow>();
 
@@ -90,13 +117,18 @@ namespace pctory
                 rows.Add(row);
             }
 
-            dv.Rows.AddRange(rows.ToArray());
+            return rows.ToArray();
         }
 
-        public static void PcbDVGHeaderInitializer(ref DataGridView dv)
+        public static void PcbDVGHeaderInitializer(DataGridView dv)
         {
-            dv.Rows.Clear();
-            dv.Columns.Clear();
+            if (dv.InvokeRequired)
+            {
+                dv.Invoke(new MethodInvoker(() => PcbDVGHeaderInitializer(dv)));
+                return;
+            }
+
+            DefaultDVGInitializer(dv);
 
             dv.Columns.AddRange(new DataGridViewColumn[]
             {
@@ -109,8 +141,15 @@ namespace pctory
                 },
                 new DataGridViewTextBoxColumn()
                 {
-                    HeaderText = "접근 종료(지속시간)",
+                    HeaderText = "접근 종료",
                     Name = "dvgColBackgroundTime",
+                    CellTemplate = new DataGridViewTextBoxCell(),
+                    Width = 200
+                },
+                new DataGridViewTextBoxColumn()
+                {
+                    HeaderText = "지속 시간",
+                    Name = "dvgColMaintainedTime",
                     CellTemplate = new DataGridViewTextBoxCell(),
                     Width = 200
                 },
@@ -123,9 +162,10 @@ namespace pctory
                 },
 
             });
+
         }
 
-        public static void InputDataPcbDVG(ref DataGridView dv, List<PCB> inform)
+        public static DataGridViewRow[] PCB2DVGRows( List<PCB> inform)
         {
             var rows = new List<DataGridViewRow>();
             for(int i = 0; i< inform.Count; ++i)
@@ -142,6 +182,10 @@ namespace pctory
                     new DataGridViewTextBoxCell()
                     {
                         Value = item.BackgroundTime.HasValue ? item.BackgroundTime.ToString() : "-"
+                    },                    
+                    new DataGridViewTextBoxCell()
+                    {
+                        Value = item.BackgroundTime.HasValue ? ApiHelper.CalculateSpanTime(item).ToString() : "-"
                     },
                     new DataGridViewTextBoxCell()
                     {
@@ -173,6 +217,10 @@ namespace pctory
                         },
                         new DataGridViewTextBoxCell()
                         {
+                            Value = ""
+                        },
+                        new DataGridViewTextBoxCell()
+                        {
                             Value = presistTime.HasValue ? presistTime.ToString() : "-"
                         },
                         new DataGridViewTextBoxCell()
@@ -184,7 +232,8 @@ namespace pctory
 
                 }
             }
-            dv.Rows.AddRange(rows.ToArray());
+
+            return rows.ToArray();
         }
     }
 }
