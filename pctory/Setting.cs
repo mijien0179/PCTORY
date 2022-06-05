@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Diagnostics;
 
+using System.IO;
+
 namespace pctory
 {
     internal class Setting
@@ -87,11 +89,10 @@ namespace pctory
                 rKey.SetValue(RegKey.LogSaveLoc, value, RegistryValueKind.String);
             }
         }
+
         public static void SetStartup()
         {
-
             Process.Start("cmd", $"/c schtasks -create /sc onlogon /tn \"\\pctory\\autorun\" /tr \"{Application.ExecutablePath} --autorun\" /RL HIGHEST");
-
         }
 
         public static void ResetStartup()
@@ -99,10 +100,43 @@ namespace pctory
             Process.Start("cmd", $"/c schtasks -delete /tn \"\\pctory\\autorun\" /f");
             Process.Start("cmd", $"/c schtasks -delete /tn \"\\pctory\" /f");
         }
+        
+        public static bool isSetStartup()
+        {
+            Process proc = new Process();
+            proc.StartInfo.FileName = "cmd";
+            proc.StartInfo.Arguments = $"/c schtasks";
+            proc.StartInfo.CreateNoWindow = true;
+            proc.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            proc.StartInfo.RedirectStandardOutput = true;
+            proc.StartInfo.UseShellExecute = false;
+            proc.Start();
 
-        public static bool isreg=false;
+            string str = proc.StandardOutput.ReadToEnd();
 
-        public static void FileConnectProgram()
+
+            bool has = str.Contains("pctory");
+
+            proc.StandardOutput.Close();
+            proc.WaitForExit();
+            proc.Close();
+            return has;
+        }
+
+
+        public static bool isShellCommandConnected
+        {
+            get{
+
+                RegistryKey key = Registry.CurrentUser.OpenSubKey($"Software\\Classes\\.{LogFileInfo.Extension}", false);
+                bool result = key != null;
+
+                if(key != null) key.Close();
+                return result;
+            }
+        }
+
+        public static void SetShellCommand()
         {
             string extension = "." + LogFileInfo.Extension;
             string filetype = "pctory";
@@ -132,27 +166,20 @@ namespace pctory
                     }
                 }
             }
-            SetIcon();
-            isreg = true;
+
+            Registry.ClassesRoot.CreateSubKey(extension).CreateSubKey("DefaultIcon").SetValue(null, Application.StartupPath + "\\Icon1.ico,2");
         }
 
-        public static void DeleteRegistry()
-        {
-            if (isreg == true)
-            {
-                string extension = "." + LogFileInfo.Extension;
-                string exttype = LogFileInfo.Extension + extension;
-                Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKey(extension);
-                Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKeyTree(exttype);
-                Registry.ClassesRoot.DeleteSubKeyTree(extension);
-            }
-        }
-
-        public static void SetIcon()
+        public static void ResetShellCommand()
         {
             string extension = "." + LogFileInfo.Extension;
-            Registry.ClassesRoot.CreateSubKey(extension).CreateSubKey("DefaultIcon").SetValue(null, Application.StartupPath+"\\Icon1.ico,2");
+            string exttype = LogFileInfo.Extension + extension;
+            Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKey(extension);
+            Registry.CurrentUser.OpenSubKey(@"SoftWare\Classes", true).DeleteSubKeyTree(exttype);
+            Registry.ClassesRoot.DeleteSubKeyTree(extension);
+
         }
+
     }
 
 }
