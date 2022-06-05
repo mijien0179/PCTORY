@@ -24,9 +24,11 @@ namespace pctory
         }
 
         private Thread thread;
+        private bool alives;
 
         public DayTrace(EventHandler handler)
         {
+            alives = true;
             DayChanged += handler;
             bDate = DateTime.Today;
             thread = new Thread(TimeChecker);
@@ -41,8 +43,14 @@ namespace pctory
                 DayChanged(this, new EventArgs());
             }
             bDate = now;
+            if (!alives) return;
             Thread.Sleep(3000);
             TimeChecker();
+        }
+
+        public void Stop()
+        {
+            alives = false;
         }
 
         ~DayTrace()

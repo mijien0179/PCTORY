@@ -68,12 +68,11 @@ namespace pctory
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            FileAutoOutput_Closing(sender, e);
             Hide();
             if (!closer) e.Cancel = true;
 
+            FileAutoOutput_Closing(sender, e);
             running = false;
-            tracer.StopTrace();
             thread.Join();
         }
 
@@ -149,12 +148,12 @@ namespace pctory
 
             sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             sfd.Filter = $"PCtory (*.{LogFileInfo.Extension})| *.{LogFileInfo.Extension}";
-            sfd.FileName = $"{now.ToString().Substring(0, 10)}.{LogFileInfo.Extension}";
+            sfd.FileName = null;
         }
 
         private void tsmiSaveLogFile_Click(object sender, EventArgs e)
         {
-            if (sfd.FileName == null)
+            if (sfd.FileName == "")
             {
                 tsmiSaveAsLogFile_Click(tsmiSaveAsLogFile, EventArgs.Empty);
                 return;
@@ -174,7 +173,10 @@ namespace pctory
         private void 종료ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             closer = true;
-            Application.Exit();
+            tracer.StopTrace();
+            daytrace.Stop();
+
+            Close();
         }
 
         private void noti_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -185,6 +187,9 @@ namespace pctory
         private void OpenForm()
         {
             Show();
+            running = true;
+            thread = new Thread(textUpdate);
+            thread.Start();
         }
 
         private void 열기ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -263,28 +268,21 @@ namespace pctory
         public void FileAutoOutput_DayChange(object sender, EventArgs e)
         {
             DateTime d = daytrace.bDate;
-            DirectoryInfo di = new DirectoryInfo(Setting.LogSaveLoc);
             string path = Setting.LogSaveLoc + "\\" + d.ToString().Substring(0, 10) + "." + LogFileInfo.Extension;
-            if (di.Exists == false)
-                di.Create();
+            if (!Directory.Exists(Setting.LogSaveLoc))
+                Directory.CreateDirectory(Setting.LogSaveLoc);
 
-            Stream wstream = new FileStream(path, FileMode.Create);
-            BinaryFormatter serial = new BinaryFormatter();
-            serial.Serialize(wstream, tracer.ProcInfoList);
-            wstream.Close();
+            FileIO.FileOutput(tracer.ProcInfoList, path);
         }
+
         public void FileAutoOutput_Closing(object sender, EventArgs e)
         {
             DateTime d = DateTime.Today;
-            DirectoryInfo di = new DirectoryInfo(Setting.LogSaveLoc);
             string path = Setting.LogSaveLoc + "\\" + d.ToString().Substring(0, 10) + "." + LogFileInfo.Extension;
-            if (di.Exists == false)
-                di.Create();
+            if (!Directory.Exists(Setting.LogSaveLoc))
+                Directory.CreateDirectory(Setting.LogSaveLoc);
 
-            Stream wstream = new FileStream(path, FileMode.Create);
-            BinaryFormatter serial = new BinaryFormatter();
-            serial.Serialize(wstream, tracer.ProcInfoList);
-            wstream.Close();
+            FileIO.FileOutput(tracer.ProcInfoList, path);
         }
 
         private void 로그뷰어VToolStripMenuItem_Click(object sender, EventArgs e)
@@ -292,6 +290,13 @@ namespace pctory
             fViewer view = new fViewer(null);
             view.Owner = this;
             view.ShowDialog();
+        }
+
+        private void 현재통계보기ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Graph graph = new Graph(tracer.ProcInfoList, "현재 통계");
+            graph.Owner = this;
+            graph.ShowDialog();
         }
     }
 }
