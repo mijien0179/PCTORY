@@ -6,6 +6,8 @@ using System.Windows.Forms;
 using System.IO;
 
 using System.Threading;
+using System.Diagnostics;
+using System.Text;
 
 namespace pctory
 {
@@ -19,18 +21,37 @@ namespace pctory
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            bool isFirst = false;
 
-            if (args.Length != 0)
+            Mutex vMutex = new Mutex(true, Application.ProductName + " view", out isFirst);
+            if (args.Length != 0 && args[0] != "--autorun")
             {
                 FileInfo f = new FileInfo(args[0]);
                 if (f.Exists && LogFileInfo.Extension.Contains(f.Extension.Split('.').Last()))
                 {
-                    Application.Run(new fViewer(new string[] {f.FullName}));
-                    return;
-                }
-            }
+                    if (isFirst)
+                    {
+                        Application.Run(new fViewer(new string[] {f.FullName}));
+                    }
+                    else
+                    {
+                        WinApi.COPYDATASTRUCT cds = new WinApi.COPYDATASTRUCT();
+                        cds.dwData = IntPtr.Zero;
+                        cds.cbData = Encoding.Default.GetByteCount(args[0]) + 1;
+                        cds.lpData = args[0];
 
-            bool isFirst = false;
+                        WinApi.SendMessage(WinApi.FindWindow("", "Log View"), WinApi.Message.WM_COPYDATA , 0, ref cds);
+                    }
+
+                }else if (args[0] == "--view")
+                {
+                    Application.Run(new fViewer(null));
+                }
+                vMutex.Close();
+                return;
+            }
+            vMutex.Close();
+
             Mutex mutex = new Mutex(true, Application.ProductName, out isFirst);
             if (!isFirst)
             {

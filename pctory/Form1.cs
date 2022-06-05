@@ -12,6 +12,8 @@ using System.Threading;
 using pctory.design;
 using System.Runtime.Serialization.Formatters.Binary;
 
+using System.Diagnostics;
+
 namespace pctory
 {
     public partial class Form1 : pctoryForm
@@ -298,9 +300,8 @@ namespace pctory
 
         private void 로그뷰어VToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            fViewer view = new fViewer(null);
-            view.Owner = this;
-            view.ShowDialog();
+            Process.Start(Application.ExecutablePath, "--view");
+            return;
         }
 
         private void 현재통계보기ToolStripMenuItem_Click(object sender, EventArgs e)

@@ -11,6 +11,12 @@ namespace pctory
 {
     internal class WinApi
     {
+        public static class Message 
+        {
+            public const uint WM_COPYDATA = 0x4A;
+
+        }
+
         public enum EventCode : int
         {
             EVENT_SYSTEM_FOREGROUND = 0x0003,
@@ -114,6 +120,20 @@ namespace pctory
         /// <returns><c>True</c>시 성공</returns>
         [DllImport("user32.dll", SetLastError = false)]
         public static extern bool UnhookWinEvent(int hWinEventHook);
-        
+
+        // ref. https://ehdrn.tistory.com/295
+        public struct COPYDATASTRUCT
+        {
+            public IntPtr dwData;
+            public int cbData;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public string lpData;
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, uint wParam, ref COPYDATASTRUCT lParam);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr FindWindow(string strClassName, string strWindowName);
     }
 }

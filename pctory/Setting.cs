@@ -167,7 +167,7 @@ namespace pctory
                 }
             }
 
-            Registry.ClassesRoot.CreateSubKey(extension).CreateSubKey("DefaultIcon").SetValue(null, Application.StartupPath + "\\Icon1.ico,2");
+            Registry.ClassesRoot.CreateSubKey(extension).CreateSubKey("DefaultIcon").SetValue(null, Application.ExecutablePath);
         }
 
         public static void ResetShellCommand()

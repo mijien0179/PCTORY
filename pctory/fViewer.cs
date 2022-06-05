@@ -40,6 +40,18 @@ namespace pctory
 
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            if(WinApi.Message.WM_COPYDATA == m.Msg)
+            {
+                WinApi.COPYDATASTRUCT cds = (WinApi.COPYDATASTRUCT)m.GetLParam(typeof(WinApi.COPYDATASTRUCT));
+                AddFilePath2List(cds.lpData, true);
+                Activate();
+                WindowState = FormWindowState.Normal;
+            }
+            base.WndProc(ref m);
+        }
+
         private void fViewer_Load(object sender, EventArgs e)
         {
                 dataGridView1.ClearSelection();
