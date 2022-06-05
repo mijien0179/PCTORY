@@ -40,7 +40,7 @@ namespace pctory
                         cds.cbData = Encoding.Default.GetByteCount(args[0]) + 1;
                         cds.lpData = args[0];
 
-                        WinApi.SendMessage(WinApi.FindWindow("", "Log View"), WinApi.Message.WM_COPYDATA , 0, ref cds);
+                        WinApi.SendMessage(WinApi.FindWindow(null, "Log View"), WinApi.Message.WM_COPYDATA , 0, ref cds);
                     }
 
                 }else if (args[0] == "--view")

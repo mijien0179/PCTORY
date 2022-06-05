@@ -20,6 +20,8 @@ namespace pctory
         {
             InitializeComponent();
 
+            Text = "Log View";
+
             viewInitializer.ProcInfoListDVGHeaderInitializer(dataGridView1);
             viewInitializer.PcbDVGHeaderInitializer(dataGridView2);
 
