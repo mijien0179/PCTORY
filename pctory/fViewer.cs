@@ -16,7 +16,7 @@ namespace pctory
     {
         ProcessInfoList inform;
         Dictionary<string, bool> checker = new Dictionary<string,bool>();
-        public fViewer(string path)
+        public fViewer(string[] args)
         {
             InitializeComponent();
 
@@ -27,6 +27,14 @@ namespace pctory
             tsmiViewVertical.Tag = Orientation.Vertical;
 
             trvFile.Nodes.Clear();
+
+            if(args != null)
+            {
+                foreach(string path in args)
+                {
+                    AddFilePath2List(path, false);
+                }
+            }
 
             ViewTypeChange(tsmiViewHorizental, new EventArgs());
 

@@ -25,7 +25,7 @@ namespace pctory
                 FileInfo f = new FileInfo(args[0]);
                 if (f.Exists && LogFileInfo.Extension.Contains(f.Extension.Split('.').Last()))
                 {
-                    Application.Run(new fViewer(f.FullName));
+                    Application.Run(new fViewer(new string[] {f.FullName}));
                     return;
                 }
             }
@@ -45,5 +45,7 @@ namespace pctory
             mutex.Close();
 
         }
+
+        
     }
 }
