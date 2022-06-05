@@ -262,15 +262,67 @@ namespace pctory
 
         private void 통계ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (sender.ToString() == "주간그래프") {
-                //procInfoList합쳐서 넘겨줄것. data 읽고.
-            
-            }
-            Graph grep = new Graph(tracer.ProcInfoList, sender.ToString());
+            Graph grep = new Graph(ReadData(sender.ToString()), sender.ToString());
             grep.Owner = this;
             grep.ShowDialog();
+            
+        }
+        public ProcessInfoList ReadData(String time) {
+            DateTime day= DateTime.Now;
+            ProcessInfoList data = tracer.ProcInfoList;
+            String path = "";
+            if (time == "월간그래프")
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    day = DateTime.Now.AddDays(-i);
+                    path = Setting.LogSaveLoc + "\\" + day.Year.ToString();
+                    if (day.Month <= 9)
+                    { 
+                        path +="-0" + day.Month.ToString();
+                    }else path += "-" + day.Month.ToString();
+                    if (day.Day <= 9) { 
+                        path +="-0" + day.Day.ToString() +".pctory";
+                    }else path += "-" + day.Day.ToString() + ".pctory";
+                    
+                    FileInfo datafile = new FileInfo(path);
+                    if (datafile.Exists) {
+                       ProcessInfoList newdata = FileIO.FileInput(path);
+                       data= ApiHelper.CombineProcessInfoList(data, newdata);
+                    }
+                }
+                return data;
+            }
+            else if (time == "주간그래프")
+            {
+                for (int i = 0; i < 7; i++)
+                {
+                    day = DateTime.Now.AddDays(-i);
+                    path = Setting.LogSaveLoc + "\\" + day.Year.ToString();
+                    if (day.Month <= 9)
+                    {
+                        path += "-0" + day.Month.ToString();
+                    }
+                    else path += "-" + day.Month.ToString();
+                    if (day.Day <= 9)
+                    {
+                        path += "-0" + day.Day.ToString() + ".pctory";
+                    }
+                    else path += "-" + day.Day.ToString() + ".pctory";
+
+                    FileInfo datafile = new FileInfo(path);
+                    if (datafile.Exists)
+                    {
+                        ProcessInfoList newdata = FileIO.FileInput(path);
+                        data = ApiHelper.CombineProcessInfoList(data, newdata);
+                    }
+                }
+                return data;
+            }
+            else
+                return data;
+
 
         }
-
     }
 }
