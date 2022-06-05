@@ -27,132 +27,91 @@ namespace pctory
 
         private void textUpdate()
         {
-            List<DataGridViewRow> row = new List<DataGridViewRow>();
-            
+
             while (running)
             {
-                row.Clear();
-                foreach (var key in tracer.ProcInfoList.GetKeys())
-                {
-                    var value = tracer.ProcInfoList.GetData(key).Last();
-                    var LastnameValue = tracer.ProcInfoList.GetData(key).Last();
-
-                    DataGridViewRow temp = new DataGridViewRow();
-
-                    temp.Cells.AddRange(
-                        new DataGridViewTextBoxCell()
-                        {
-                            Value = Path.GetFileName(key)
-
-                        },
-                        new DataGridViewTextBoxCell()
-                        {
-                            Value = value.ForegroundTime.ToString()
-                        },
-                        new DataGridViewTextBoxCell()
-                        {
-                            Value = value.BackgroundTime == DateTime.MinValue ? "-" : value.BackgroundTime.ToString()
-                        },
-                        new DataGridViewTextBoxCell()
-                        {
-                            Value = LastnameValue.GetCaptionData().HasValue ? LastnameValue.GetCaptionData().Value.Item2 : "-" 
-                        }
-                    ) ;
-
-                    row.Add(temp);
-                }
-
-                if (dataGridView1.InvokeRequired)
-                {
-                    dataGridView1.Invoke(new MethodInvoker(() =>
-                    {
-                        InvalidateText(ref row);
-                    }));
-
-                }
-                else
-                {
-                    InvalidateText(ref row);
-                }
-
-                
-
+                InvalidateText();
                 Thread.Sleep(3000);
             }
         }
 
-        private void InvalidateText(ref List<DataGridViewRow> data)
+        private void InvalidateText()
         {
+            if (dataGridView1.InvokeRequired)
+            {
+                dataGridView1.Invoke(new MethodInvoker(InvalidateText));
+                return;
+
+            }
+
             dataGridView1.Rows.Clear();
-            
-            dataGridView1.Rows.AddRange(data.ToArray());
+            dataGridView1.Rows.AddRange(viewInitializer.ProcInfoList2DVGRows(tracer.ProcInfoList));
         }
         public Form1(string[] args)
         {
             InitializeComponent();
             InitializeFileDialog();
-            Setting.FileConnectProgram();
-            Setting.DeleteRegistry();
-            //tracer.RunTrace();
-            tracer = new Tracer(true).RunTrace();
+
+            Tag = TitleBarColor;
 
             this.args = args;
 
-            DataGridView dv = this.dataGridView1;
-            dv.ReadOnly = true;
+            tracer = new Tracer(true);
 
-            DataGridViewColumn[] col = new DataGridViewColumn[]{
-                new DataGridViewTextBoxColumn(){
-                    HeaderText = "프로그램",
-                    Name = "dvgColProgram",
-                    CellTemplate = new DataGridViewTextBoxCell(),
-                    Width= 150
-                },
-                new DataGridViewTextBoxColumn()
-                {
-                    HeaderText = "최근 접근 시작 기록",
-                    Name = "dvgColRecentAccess",
-                    CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 200
-                },
-                new DataGridViewTextBoxColumn()
-                {
-                    HeaderText = "최근 접근 종료 기록",
-                    Name = "dvgColRecentExit",
-                    CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 200
-                },
-                new DataGridViewTextBoxColumn()
-                {
-                    HeaderText = "최근 제목",
-                    Name = "dvgColRecentText",
-                    CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 250
-                }
-            };
-
-            dv.Columns.AddRange(col);
-
+            viewInitializer.ProcInfoListDVGHeaderInitializer(dataGridView1);
+            tsmiTracerRun_Click(null, null);
         }
 
-      
+
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             Hide();
-            if(!closer) e.Cancel = true;
+            if (!closer) e.Cancel = true;
 
             running = false;
             tracer.StopTrace();
             thread.Join();
         }
 
-        private void tsmiStop_Click(object sender, EventArgs e)
+        private void tsmiTracerRun_Click(object sender, EventArgs e)
         {
-            running = false;
+            if (tracer.Status) // 정지 상태로 변경할 것
+            {
+                tsmiTracerRun.Text = "트레이서 재동작";
 
-            tracer.StopTrace();
+                running = false;
+                tracer.StopTrace();
 
-            MessageBox.Show("실행이 종료되었습니다.", "",MessageBoxButtons.OK, MessageBoxIcon.Stop);
+
+                Tag = TitleBarColor;
+
+                TitleBarColor = new Color[]
+{
+                    Color.FromArgb(204,140,43),
+                    Color.FromArgb(204,126,43)
+};
+
+
+
+                if (sender != null) MessageBox.Show("트레이서가 정지되었습니다.", "안내", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            else // 활성 상태로 변경할 것
+            {
+                tsmiTracerRun.Text = "트레이서 일시정지";
+
+                tracer.RunTrace();
+
+                running = true;
+                thread = new Thread(textUpdate);
+                thread.Start();
+
+                TitleBarColor = (Color[])Tag;
+
+
+                if (sender != null) MessageBox.Show("트레이서가 시작되었습니다.", "안내", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
         }
 
         private void 설정OToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,7 +120,7 @@ namespace pctory
             fsetting.Owner = this;
             fsetting.ShowDialog();
         }
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
             running = true;
@@ -174,41 +133,29 @@ namespace pctory
                 ShowInTaskbar = false;
 
                 args = (from d in args
-                       where d != "--autorun"
-                       select d).ToArray();
+                        where d != "--autorun"
+                        select d).ToArray();
             }
-            
+
         }
-        
+
         private void InitializeFileDialog()
         {
             DateTime now = DateTime.Now;
-            
-            ofd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            ofd.Filter = $"PCtory (*.{LogFileInfo.Extension})| *.{LogFileInfo.Extension}";
-            ofd.FileName = "";
 
-            sfd.InitialDirectory = ofd.InitialDirectory;
-            sfd.Filter = ofd.Filter;
-            sfd.FileName = $"{now.ToString().Substring(0,10)}.{LogFileInfo.Extension}";
-        }
-
-        private void tsmiOpenLogFile_Click(object sender, EventArgs e)
-        {
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                new fViewer(ofd.FileName).Show();
-            }
+            sfd.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            sfd.Filter = $"PCtory (*.{LogFileInfo.Extension})| *.{LogFileInfo.Extension}";
+            sfd.FileName = $"{now.ToString().Substring(0, 10)}.{LogFileInfo.Extension}";
         }
 
         private void tsmiSaveLogFile_Click(object sender, EventArgs e)
         {
-            if (ofd.FileName == "")
+            if (sfd.FileName == null)
             {
                 tsmiSaveAsLogFile_Click(tsmiSaveAsLogFile, EventArgs.Empty);
                 return;
             }
-            sfd.FileName = ofd.FileName;
+
             FileIO.FileOutput(tracer.ProcInfoList, sfd.FileName);
         }
 
@@ -216,29 +163,14 @@ namespace pctory
         {
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                ofd.FileName = sfd.FileName;
                 tsmiSaveLogFile_Click(tsmiSaveLogFile, EventArgs.Empty);
             }
-        }
-
-        private void tsmiRestart_Click(object sender, EventArgs e)
-        {
-            if(running == true)
-                MessageBox.Show("프로그램이 실행 중 입니다.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else
-            {
-                running = true;
-                tracer.RunTrace();
-                thread = new Thread(textUpdate);
-                thread.Start();
-            }
-
         }
 
         private void 종료ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             closer = true;
-            Close();
+            Application.Exit();
         }
 
         private void noti_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -257,18 +189,16 @@ namespace pctory
         }
 
 
-        
-      
-
         private void 통계ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Graph grep = new Graph(ReadData(sender.ToString()), sender.ToString());
             grep.Owner = this;
             grep.ShowDialog();
-            
+
         }
-        public ProcessInfoList ReadData(String time) {
-            DateTime day= DateTime.Now;
+        public ProcessInfoList ReadData(String time)
+        {
+            DateTime day = DateTime.Now;
             ProcessInfoList data = tracer.ProcInfoList;
             String path = "";
             if (time == "월간그래프")
@@ -278,17 +208,21 @@ namespace pctory
                     day = DateTime.Now.AddDays(-i);
                     path = Setting.LogSaveLoc + "\\" + day.Year.ToString();
                     if (day.Month <= 9)
-                    { 
-                        path +="-0" + day.Month.ToString();
-                    }else path += "-" + day.Month.ToString();
-                    if (day.Day <= 9) { 
-                        path +="-0" + day.Day.ToString() +".pctory";
-                    }else path += "-" + day.Day.ToString() + ".pctory";
-                    
+                    {
+                        path += "-0" + day.Month.ToString();
+                    }
+                    else path += "-" + day.Month.ToString();
+                    if (day.Day <= 9)
+                    {
+                        path += "-0" + day.Day.ToString() + ".pctory";
+                    }
+                    else path += "-" + day.Day.ToString() + ".pctory";
+
                     FileInfo datafile = new FileInfo(path);
-                    if (datafile.Exists) {
-                       ProcessInfoList newdata = FileIO.FileInput(path);
-                       data= ApiHelper.CombineProcessInfoList(data, newdata);
+                    if (datafile.Exists)
+                    {
+                        ProcessInfoList newdata = FileIO.FileInput(path);
+                        data = ApiHelper.CombineProcessInfoList(data, newdata);
                     }
                 }
                 return data;
@@ -323,6 +257,13 @@ namespace pctory
                 return data;
 
 
+        }
+
+        private void 로그뷰어VToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fViewer view = new fViewer(null);
+            view.Owner = this;
+            view.ShowDialog();
         }
     }
 }
