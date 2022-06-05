@@ -109,7 +109,7 @@ namespace pctory
             // 전달되는 특성이 뭔지 정확히 파악할 수 있게 enum 등으로 표현하면 좋을것 같습니다..
             if(trvFile.SelectedNode != null)
             {
-                Graph grep = new Graph(inform, "일일");
+                Graph grep = new Graph(inform, "선택 항목");
                 grep.Owner = this;
                 grep.ShowDialog();
             }
@@ -131,7 +131,7 @@ namespace pctory
                 }
             }
 
-            if(path.Count > 1)
+            if(path.Count > 0)
             {
                 ProcessInfoList info = FileIO.FileInput(path[0]);
                 for(int i = 1; i < path.Count;++i)
@@ -139,7 +139,7 @@ namespace pctory
                     info = ApiHelper.CombineProcessInfoList(info, FileIO.FileInput(path[i]));
                 }
 
-                Graph grep = new Graph(info, "일일");
+                Graph grep = new Graph(info, "체크 항목");
                 grep.Owner = this;
                 grep.ShowDialog();
 

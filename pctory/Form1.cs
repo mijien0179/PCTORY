@@ -72,10 +72,10 @@ namespace pctory
         {
             Hide();
             if (!closer) e.Cancel = true;
+            else FileAutoOutput_Closing(sender, e);
 
-            FileAutoOutput_Closing(sender, e);
             running = false;
-            thread.Join();
+            thread.Abort();
         }
 
         private void tsmiTracerRun_Click(object sender, EventArgs e)
