@@ -354,6 +354,16 @@ namespace pctory
         }
         private string activeProcPath;
 
+        /// <summary>
+        /// 현재 활성화 여부
+        /// </summary>
+        public bool Status
+        {
+            get => status;
+            private set => status = value;
+        }
+        private bool status;
+
         #endregion
 
         #region constructor
@@ -448,12 +458,18 @@ namespace pctory
 #endif   
             HookCodeForeground = ApiHelper.SetHook(WinApi.EventCode.EVENT_SYSTEM_FOREGROUND, apiHookForegroundWindow);
             if (HookCodeForeground == 0) Trace.WriteLine("Tracer 실행 실패: HookCodeForeground");
+            else
+            {
+                Status = true;
+            }
+
 
             return this;
         }
 
         public Tracer StopTrace()
         {
+            Status = false;
             if (HookCodeForeground != 0)
             {
                 if (!ApiHelper.EndHook(HookCodeForeground)) Trace.WriteLine("Tracer 바인딩 해제 실패: HookCodeForeground");
