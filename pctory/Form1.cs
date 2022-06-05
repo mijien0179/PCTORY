@@ -22,7 +22,7 @@ namespace pctory
 
         Tracer tracer = null;
         Thread thread;
-
+        DayTrace daytrace=null;
         private bool running = false;
 
         private void textUpdate()
@@ -51,6 +51,7 @@ namespace pctory
         {
             InitializeComponent();
             InitializeFileDialog();
+ 
 
             Tag = TitleBarColor;
 
@@ -58,13 +59,16 @@ namespace pctory
 
             tracer = new Tracer(true);
 
-            viewInitializer.ProcInfoListDVGHeaderInitializer(dataGridView1);
+            viewInitializer.ProcInfoListDVGHeaderInitializer(dataGridView1);        
             tsmiTracerRun_Click(null, null);
+            daytrace = new DayTrace(FileAutoOutput_DayChange);
+
         }
 
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            FileAutoOutput_Closing(sender, e);
             Hide();
             if (!closer) e.Cancel = true;
 
@@ -255,8 +259,32 @@ namespace pctory
             }
             else
                 return data;
+        }
+        public void FileAutoOutput_DayChange(object sender, EventArgs e)
+        {
+            DateTime d = daytrace.bDate;
+            DirectoryInfo di = new DirectoryInfo(Setting.LogSaveLoc);
+            string path = Setting.LogSaveLoc + "\\" + d.ToString().Substring(0, 10) + "." + LogFileInfo.Extension;
+            if (di.Exists == false)
+                di.Create();
 
+            Stream wstream = new FileStream(path, FileMode.Create);
+            BinaryFormatter serial = new BinaryFormatter();
+            serial.Serialize(wstream, tracer.ProcInfoList);
+            wstream.Close();
+        }
+        public void FileAutoOutput_Closing(object sender, EventArgs e)
+        {
+            DateTime d = DateTime.Today;
+            DirectoryInfo di = new DirectoryInfo(Setting.LogSaveLoc);
+            string path = Setting.LogSaveLoc + "\\" + d.ToString().Substring(0, 10) + "." + LogFileInfo.Extension;
+            if (di.Exists == false)
+                di.Create();
 
+            Stream wstream = new FileStream(path, FileMode.Create);
+            BinaryFormatter serial = new BinaryFormatter();
+            serial.Serialize(wstream, tracer.ProcInfoList);
+            wstream.Close();
         }
 
         private void 로그뷰어VToolStripMenuItem_Click(object sender, EventArgs e)

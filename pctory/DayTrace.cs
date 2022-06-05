@@ -15,7 +15,13 @@ namespace pctory
     {
         public event EventHandler DayChanged;
 
-        private DateTime bDate;
+        private DateTime bdate;
+        public DateTime bDate 
+        {
+            get => bdate;
+            private set => bdate = value;
+        
+        }
 
         private Thread thread;
 
