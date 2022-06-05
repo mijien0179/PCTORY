@@ -38,6 +38,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.chkStartup = new System.Windows.Forms.CheckBox();
             this.tt = new System.Windows.Forms.ToolTip(this.components);
+            this.chkShellConnection = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.pnlSaveLoc.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -106,6 +107,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.chkShellConnection);
             this.groupBox2.Controls.Add(this.chkStartup);
             this.groupBox2.Location = new System.Drawing.Point(4, 238);
             this.groupBox2.Name = "groupBox2";
@@ -132,6 +134,17 @@
             this.tt.InitialDelay = 500;
             this.tt.ReshowDelay = 100;
             this.tt.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
+            // chkShellConnection
+            // 
+            this.chkShellConnection.AutoSize = true;
+            this.chkShellConnection.Location = new System.Drawing.Point(6, 42);
+            this.chkShellConnection.Name = "chkShellConnection";
+            this.chkShellConnection.Size = new System.Drawing.Size(76, 16);
+            this.chkShellConnection.TabIndex = 1;
+            this.chkShellConnection.Text = "파일 연결";
+            this.chkShellConnection.UseVisualStyleBackColor = true;
+            this.chkShellConnection.CheckedChanged += new System.EventHandler(this.chkShellConnection_CheckedChanged);
             // 
             // fSetting
             // 
@@ -164,5 +177,6 @@
         private System.Windows.Forms.Button btnFindLogSaveLoc;
         private System.Windows.Forms.TextBox tbxLogSaveLoc;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox chkShellConnection;
     }
 }

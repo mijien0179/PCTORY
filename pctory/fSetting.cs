@@ -19,17 +19,27 @@ namespace pctory
             MinimumSize = MaximumSize = Size;
         }
 
+        bool Init = false;
+
         private void InitializeSettingView()
         {
+            Init = false;
             chkOverrideLogSaveLoc.Checked = Setting.OverrideLogSaveLoc;
             tbxLogSaveLoc.Text = Setting.LogSaveLoc;
 
+            chkStartup.Checked = Setting.isSetStartup();
+
+            chkShellConnection.Checked = Setting.isShellCommandConnected;
+
             pnlSaveLoc.Enabled = chkOverrideLogSaveLoc.Checked;
 
+            Init = true;
         }
 
         private void chkOverrideLogSaveLoc_CheckedChanged(object sender, EventArgs e)
         {
+            if (!Init) return;
+
             pnlSaveLoc.Enabled = chkOverrideLogSaveLoc.Checked;
             Setting.OverrideLogSaveLoc = chkOverrideLogSaveLoc.Checked;
 
@@ -37,6 +47,8 @@ namespace pctory
 
         private void chkStartup_CheckedChanged(object sender, EventArgs e)
         {
+            if (!Init) return;
+
             if (chkStartup.Checked)
             {
                 Setting.SetStartup();
@@ -62,6 +74,20 @@ namespace pctory
                 MessageBox.Show("경로 설정이 완료되었습니다.", "경로 설정 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             
+        }
+
+        private void chkShellConnection_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!Init) return; 
+
+            if (chkShellConnection.Checked) 
+            {
+                Setting.SetShellCommand();
+            }
+            else
+            {
+                Setting.ResetShellCommand();
+            }
         }
     }
 }

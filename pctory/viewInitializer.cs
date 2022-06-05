@@ -21,6 +21,7 @@ namespace pctory
             dv.Rows.Clear();
             dv.Columns.Clear();
 
+            dv.ReadOnly = true;
             dv.AllowUserToDeleteRows = false;
             dv.AllowUserToAddRows = false;
             dv.AllowUserToResizeRows = false;
@@ -64,14 +65,14 @@ namespace pctory
                     HeaderText = "최근 접근 시작 기록",
                     Name = "dvgColRecentAccess",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 200
+                    Width = 170
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     HeaderText = "최근 접근 종료 기록",
                     Name = "dvgColRecentExit",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 200
+                    Width = 170
                 },
                 new DataGridViewTextBoxColumn()
                 {
@@ -137,28 +138,28 @@ namespace pctory
                     HeaderText = "접근 시작",
                     Name = "dvgColForegroundTime",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 200
+                    Width = 170
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     HeaderText = "접근 종료",
                     Name = "dvgColBackgroundTime",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 200
+                    Width = 170
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     HeaderText = "지속 시간",
                     Name = "dvgColMaintainedTime",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 200
+                    Width = 170
                 },
                 new DataGridViewTextBoxColumn()
                 {
                     HeaderText = "제목",
                     Name = "dvgColText",
                     CellTemplate = new DataGridViewTextBoxCell(),
-                    Width = 400
+                    Width = 360
                 },
 
             });
@@ -235,5 +236,6 @@ namespace pctory
 
             return rows.ToArray();
         }
+
     }
 }
