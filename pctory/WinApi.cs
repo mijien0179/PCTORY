@@ -13,8 +13,9 @@ namespace pctory
     {
         public static class Message 
         {
+            public const uint WM_QUERYENDSESSION = 0x11;
             public const uint WM_COPYDATA = 0x4A;
-
+            public const uint WM_SETFOCUS = 0x07;
         }
 
         public enum EventCode : int
@@ -120,6 +121,9 @@ namespace pctory
         /// <returns><c>True</c>시 성공</returns>
         [DllImport("user32.dll", SetLastError = false)]
         public static extern bool UnhookWinEvent(int hWinEventHook);
+
+        [DllImport("user32.dll", SetLastError = false)]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);
 
         // ref. https://ehdrn.tistory.com/295
         public struct COPYDATASTRUCT

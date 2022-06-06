@@ -35,11 +35,8 @@ namespace pctory
             dataGridView1.Rows.Clear();
             dataGridView1.Rows.AddRange(viewInitializer.ProcInfoList2DVGRows(tracer.ProcInfoList));
 
-            Application.ApplicationExit += (sender, e) =>
-            {
-                closer = true;
-                tracer.StopTrace();
-            };
+
+
         }
         public Form1()
         {
@@ -56,13 +53,42 @@ namespace pctory
             tsmiTracerRun_Click(null, null);
             daytrace = new DayTrace(FileAutoOutput_DayChange);
 
+            Application.ApplicationExit += new EventHandler((sender, e) =>
+            {
+                closer = true;
+                tracer.StopTrace();
+                FileAutoOutput_Closing(sender, e);
+            });
+            
+            Microsoft.Win32.SystemEvents.SessionEnded += new Microsoft.Win32.SessionEndedEventHandler((sender, e) =>
+            {
+                closer = true;
+                tracer.StopTrace();
+                FileAutoOutput_Closing(sender, e);
+            });
+
+            Microsoft.Win32.SystemEvents.SessionEnding += new Microsoft.Win32.SessionEndingEventHandler((sender, e) =>
+            {
+                closer = true;
+                tracer.StopTrace();
+                FileAutoOutput_Closing(sender, e);
+            });
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (WinApi.Message.WM_QUERYENDSESSION == m.Msg)
+            {
+                tracer.StopTrace();
+                FileAutoOutput_Closing(null, null);
+            }
+            base.WndProc(ref m);
         }
 
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!closer) e.Cancel = true;
-            else FileAutoOutput_Closing(sender, e);
 
             Hide();
         }
@@ -159,6 +185,7 @@ namespace pctory
         private void OpenForm()
         {
             Show();
+            Activate();
         }
 
         private void 열기ToolStripMenuItem_Click(object sender, EventArgs e)

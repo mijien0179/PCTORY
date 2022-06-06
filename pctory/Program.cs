@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.IO;
 
 using System.Threading;
+using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Text;
 
@@ -45,7 +46,13 @@ namespace pctory
 
                 }else if (args[0] == "--view")
                 {
-                    Application.Run(new fViewer(null));
+                    if(isFirst) Application.Run(new fViewer(null));
+                    else
+                    {
+                        IntPtr hWnd = WinApi.FindWindow(null, "Log View");
+                        WinApi.SetForegroundWindow(hWnd);
+                    }
+                    
                 }
                 vMutex.Close();
                 return;
